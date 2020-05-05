@@ -23,7 +23,8 @@ static struct argp_option coff_options[] = {
   {"show",    's', "FILE",      0,  "Name of Question File" },
   {"test",    't', "FILE",      0,  "Name of your Program/ Solution File" },
   {"lang",    'l', "LANG",      0,  
-  "Specify the language of your program. [C, C++11, C++17, Python3, Python2]" },
+  "Specify the language of your program. LANG=\n\
+[C, C++, C++11, C++17, JAVA, Python2, Python3]\n" },
   {"quest",   'q', "FILE",      0,  "Name of Question File" },
   { 0 }
 };
@@ -42,8 +43,12 @@ static error_t
 parse_opt (int key, char *arg, struct argp_state *state){
   /* Get the input argument from argp_parse, which we
      know is a pointer to our arguments structure. */
+
+//  if(state->argc == 1)
+//    argp_usage(state);
+
   struct arguments *coff_arguments = state->input;
-//  printf("\npare- %d\n", (int)state->input);
+  
   switch (key){
     case 's':
       coff_arguments->show_file = arg;
@@ -59,20 +64,6 @@ parse_opt (int key, char *arg, struct argp_state *state){
 
     case 'q':
       coff_arguments->quest_file = arg;
-      break;
-
-    case ARGP_KEY_ARG:
-      if (state->arg_num >= 4)
-        /* Too many arguments. */
-        argp_usage (state);
-
-      coff_arguments->args[state->arg_num] = arg;
-      break;
-
-    case ARGP_KEY_END:
-      if (state->arg_num < 2)
-        /* Not enough arguments. */
-        argp_usage (state);
       break;
 
     default:
@@ -95,11 +86,15 @@ int main(int argc, char *argv[]){
   coff_arguments.lang = "-";
   coff_arguments.quest_file = "-";
 
-//  printf("\nmain - %d\n", (int)&coff_arguments);
+  if(argc == 1){
+    fprintf(stderr,"coff: Too few arguments"
+                   "\nTry `coff --help' or `coff --usage' for more information.\n");
+    return 0;
+  }
 
   /* Parse our arguments; every option seen by parse_opt will
      be reflected in arguments. */
-  argp_parse (&coff_argp, argc, argv, 0, 0, &coff_arguments);
+  argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
 
   printf("\nTest Mode - Showing arguments");
   printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",

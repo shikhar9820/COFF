@@ -10,10 +10,9 @@ OBJ = functions.o main.o
 #Default goal
 coff: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
-	rm *.o
 
 #Header dependencies
-$(OBJ): $(DEP)
+$(OBJ): $(DEPS)
 
 .PHONY: clean
 clean:
