@@ -13,19 +13,28 @@ const char *argp_program_version = "coff - Offline Judge : 0.01";
 
 /* Documentaion */
 static const char usage_doc[] =
-  "coff - Offline Judge";
+  "\ncoff - Offline Judge\
+\n\n If you pass just FILE-NAME,\
+\n              ex: coff -s 1.quest -t sol.c\
+\n By default coff reads:\
+\n - Questions from path: ~/coff/quest\
+\n - Answers from path:   ~/coff/ans\
+\n\nThe default path can be changed by editing configuration file: `~/.coff_config`";
 
 /* A description of the arguments we accept. */
 //static char args_doc[] = "show test lang quest";
 
 /* The options we understand. */
 static struct argp_option coff_options[] = {
-  {"show",    's', "FILE",      0,  "Name of Question File" },
-  {"test",    't', "FILE",      0,  "Name of your Program/ Solution File" },
+  {"show",    's', "FILE-NAME/ FULL-PATH",      0,
+   "Name of Question File" },
+  {"test",    't', "FILE-NAME/ FULL-PATH",      0,
+   "Name of your Program/ Solution File" },
   {"lang",    'l', "LANG",      0,  
-  "Specify the language of your program. LANG=\n\
+   "Specify the language of your program. LANG=\n\
 [C, C++, C++11, C++17, JAVA, Python2, Python3]\n" },
-  {"quest",   'q', "FILE",      0,  "Name of Question File" },
+  {"quest",   'q', "FILE-NAME/ FULL-PATH",      0,
+   "Name of Question File" },
   { 0 }
 };
 
@@ -88,9 +97,13 @@ int main(int argc, char *argv[]){
 
   if(argc == 1){
     fprintf(stderr,"coff: Too few arguments"
-                   "\nTry `coff --help' or `coff --usage' for more information.\n");
+                   "\n%s\n"
+                   "\nTry `coff --help' or `coff --usage' for more information.\n",
+                   usage_doc);
     return 0;
   }
+
+  read_config();
 
   /* Parse our arguments; every option seen by parse_opt will
      be reflected in arguments. */
