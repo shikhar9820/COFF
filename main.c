@@ -5,6 +5,27 @@
 /* Local Headers */
 #include "coff.h"
 
+
+static const char config_doc[]="\
+\n-------------------------------------------------------------------------------\
+\n\n If you pass just filename to options,\
+\n              ex: coff -s 1.quest -t sol.c\
+\n   by default coff reads:\
+\n   - Questions from path: ~/coff/quest\
+\n   - Answers from path:   ~/coff/ans\
+\n\n The default path can be changed by editing configuration \
+file: `~/.coff_config`\
+\n\n The ~/.coff_config should be written as:\
+\n        <PROPERTYNAME>\
+\n        <PATH>\
+\n    Where <PROPERTYNAME> name can be either of \
+\n    \"PATH TO ANSWER\" or \"PATH TO QUESTION\" \
+\n    and <PATH> is path to directory.\
+\n      Example: \
+\n        1 |PATH TO QUESTION\
+\n        2 |~/coff/quest\
+\n-------------------------------------------------------------------------------\n";
+
 /* ------------------------------------------------------------------------- */
 /* ARGP definitions */
 
@@ -12,39 +33,54 @@
 const char *argp_program_version = "coff - Offline Judge : 0.01";
 
 /* Documentaion */
-static const char usage_doc[] = "\ncoff - Offline Judge\
-\n-------------------------------------------------------------------------------\
-\n\n If you pass just FILE-NAME,\
-\n              ex: coff -s 1.quest -t sol.c\
-\n By default coff reads:\
-\n - Questions from path: ~/coff/quest\
-\n - Answers from path:   ~/coff/ans\
-\n\nThe default path can be changed by editing configuration file:\
-`~/.coff_config`\
-\n\nThe ~/.coff_config should be written as:\
-\n    <PROPERTYNAME>\
-\n    <PATH>\
-\nWhere <PROPERTYNAME> name can be either of \"PATH TO ANSWER\" or \
-\"PATH TO QUESTION\" \
-and <PATH> is path to directory. Example: \
-\n    PATH TO QUESTION\
-\n    ~/coff/quest\
-\n-------------------------------------------------------------------------------\n";
+static const char usage_doc[] = "\ncoff - Offline Judge";
 
 /* A description of the arguments we accept. */
 //static char args_doc[] = "show test lang quest";
 
 /* The options we understand. */
 static struct argp_option coff_options[] = {
-  {"show",    's', "FILE-NAME/FULL-PATH ",      0,
-   "Name of Question File" },
-  {"test",    't', "FILE-NAME/FULL-PATH ",      0,
-   "Name of your Program/ Solution File" },
-  {"lang",    'l', "LANG",      0,  
-   "Specify the language of your program. LANG=\n\
-[C, C++, C++11, C++17, JAVA, Python2, Python3]\n" },
-  {"quest",   'q', "FILE-NAME/FULL-PATH",      0,
-   "Name of Question File" },
+  { /* Option 1 */
+    "show",
+    's',
+    "FILE/PATH ",
+    0,
+    "Prints Question "
+  },
+
+  { /* Option 2 */
+    "test",
+    't',
+    "FILE/PATH ",
+    0,
+    "Program/ Solution File"
+  },
+
+  { /* Option 3 */
+    "lang",
+    'l',
+    "LANG",
+    0,  
+    "Specify the language of your program. LANG=\n\
+[C, C++, C++11, C++17, JAVA, Python2, Python3]" 
+  },
+
+  { /* Option 4 */
+    "quest",
+    'q',
+    "FILE/PATH",
+    0,
+    "Used with --test for Evaluation"
+  },
+
+  { /* Option 5 */
+    "about-config",
+    'a',
+    0,
+    0,
+    "How to modify config file?"
+  },
+
   { 0 }
 };
 
@@ -69,6 +105,9 @@ parse_opt (int key, char *arg, struct argp_state *state){
   struct arguments *coff_arguments = state->input;
   
   switch (key){
+    case 'a':
+      printf("%s", config_doc);
+      break;
     case 's':
       coff_arguments->show_file = arg;
       break;
