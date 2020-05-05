@@ -11,13 +11,16 @@ int print_err(const char[]);
 /* Structure to contain defaily path of Question and Answers */
 struct {
   char home[PATH_MAX_len];
-  char quest_director[PATH_MAX_len];
+  char quest_directory[PATH_MAX_len];
   char test_directory[PATH_MAX_len];
 }coff_config;
 
 void filename_flush(char[]);
 void read_config(void);
-void expand_file_path(char[] /*dest*/, char[]/*source*/);
-void expand_dir_path(char[] /*dest*/, char[]/*source*/);
+void replace_newline_with_null(char[]);
+
+/* Below both functions return 0 only on success. */
+int expand_file_path(char[] /*dest*/, char[]/*source*/);
+int expand_dir_path(char[] /*dest*/, char[]/*source*/);
 
 #endif /* COOF_H */

@@ -1,3 +1,4 @@
+/* Standard Headers */
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -7,6 +8,7 @@
 #include <ctype.h>
 #include <errno.h>
 
+/* Local Headers */
 #include "coff.h"
 
 int print_err(const char a[]){
@@ -22,7 +24,9 @@ void filename_flush(char a[]){
     a[i] = '\0';
 }
 
-void expand_file_path(char path[], char file[]){
+/* ------------------------------------------------------------------------- */
+
+int expand_file_path(char path[], char file[]){
   filename_flush(path);
 
   if(file[0] == '~'){
@@ -46,22 +50,22 @@ void expand_file_path(char path[], char file[]){
 
   else{
     fprintf(stderr, "\nInvalid File Name \"%s\"\n", file);
-    exit(0);
+    return 12;
   }
 
   if(access(path, F_OK) != 0){
     fprintf(stderr, "\nError: Cannot open file: \"%s\": %s\n",
                    path,
                    strerror(errno));
-    exit(errno);
+    return errno;
   }
 
-  return;
+  return 0;
 }
 
 /* ------------------------------------------------------------------------- */
 
-void expand_dir_path(char path[], char dir[]){
+int expand_dir_path(char path[], char dir[]){
   filename_flush(path);
 
   if(dir[0] == '~'){
@@ -85,7 +89,7 @@ void expand_dir_path(char path[], char dir[]){
 
   else{
     fprintf(stderr, "\nInvalid Directory Name \"%s\"\n", path);
-    exit(0);
+    return 11;
   }
 
   DIR *direc = opendir(path);
@@ -95,10 +99,10 @@ void expand_dir_path(char path[], char dir[]){
     fprintf(stderr, "\nError: Cannot open directory: \"%s\": %s\n",
                    path,
                    strerror(errno));
-    exit(errno);
+    return errno;
   }
 
-  return;
+  return 0;
 
 }
 

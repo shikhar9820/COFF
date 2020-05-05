@@ -5,7 +5,7 @@ CFLAGS = -Wall
 DEPS = coff.h
 
 #Object Files   
-OBJ = functions.o main.o
+OBJ = functions.o read_config.o main.o
 
 #Default goal
 coff: $(OBJ)
