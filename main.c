@@ -1,8 +1,8 @@
-/* Standard headers */
+/* Standard Headers */
 #include <stdio.h>
 #include <argp.h>
 
-/* Local headers */
+/* Local Headers */
 #include "coff.h"
 
 /* ------------------------------------------------------------------------- */
@@ -103,10 +103,16 @@ int main(int argc, char *argv[]){
     return 0;
   }
 
+  printf("\nReading configuration file.");
   read_config();
+  printf("\nSet Default Path for Questions as: %s",
+         coff_config.quest_directory);
+  printf("\nSet Default Path for Answers as:   %s\n",
+         coff_config.test_directory);
 
   /* Parse our arguments; every option seen by parse_opt will
      be reflected in arguments. */
+  printf("\n");
   argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
 
   printf("\nTest Mode - Showing arguments");
