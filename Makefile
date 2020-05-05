@@ -17,4 +17,4 @@ $(OBJ): $(DEP)
 
 .PHONY: clean
 clean:
-	rm -f *.o coff
+	rm -f *.o *.out coff
