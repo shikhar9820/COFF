@@ -9,10 +9,13 @@
 
 void replace_newline_with_null(char a[]){
   int i;
-  for(i=0; i<PATH_MAX_len; i++)
-    if(a[i] == '\n')
+  for(i=0; i<PATH_MAX_len; i++){
+    if(a[i] == '\n'){
       a[i] = '\0';
-
+      if(a[i-1] == '/')
+        a[i-1] = '\0';
+    }
+  }
 }
 
 /* ------------------------------------------------------------------------- */
