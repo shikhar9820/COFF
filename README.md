@@ -6,7 +6,7 @@ Offline Judge for Competitive Coding
 
 # How to run this Project?
 
-1) Clobe the Repository.
+1) Clone the Repository.
 2) Switch to `master` branch.
 3) To build the project, enter `make`.
 4) Run `./coff` .
