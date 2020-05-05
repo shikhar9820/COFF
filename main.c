@@ -12,14 +12,20 @@
 const char *argp_program_version = "coff - Offline Judge : 0.01";
 
 /* Documentaion */
-static const char usage_doc[] =
-  "\ncoff - Offline Judge\
+static const char usage_doc[] = "\ncoff - Offline Judge\
 \n\n If you pass just FILE-NAME,\
 \n              ex: coff -s 1.quest -t sol.c\
 \n By default coff reads:\
 \n - Questions from path: ~/coff/quest\
 \n - Answers from path:   ~/coff/ans\
-\n\nThe default path can be changed by editing configuration file: `~/.coff_config`";
+\n\nThe default path can be changed by editing configuration file: `~/.coff_config`\
+\n\nThe ~/.coff_config should be written as:\
+\n  <PROPERTYNAME>\
+\n  <PATH>\
+\nWhere <PROPERTYNAME> name can be either of \"PATH TO ANSWER\" or \"PATH TO QUESTION\" \
+and <PATH> is path to directory. Example: \
+\n    PATH TO QUESTION\
+\n    ~/coff/quest\n";
 
 /* A description of the arguments we accept. */
 //static char args_doc[] = "show test lang quest";
