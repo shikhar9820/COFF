@@ -159,7 +159,7 @@ int main(int argc, char *argv[]){
   printf("\nSet Default Path for Answers as:   %s",
          coff_config.test_directory);
   printf("\n----------------------------------------------------------------"
-         "-------------\n");
+         "----------------\n");
 
   /* Parse our arguments; every option seen by parse_opt will
      be reflected in arguments. */
