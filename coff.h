@@ -8,7 +8,7 @@
 
 int print_err(const char[]);
 
-/* Structure to contain defaily path of Question and Answers */
+/* Structure to contain user configuration. - functions.c */
 struct {
   char home[PATH_MAX_len];
   char quest_directory[PATH_MAX_len];
@@ -19,7 +19,14 @@ void filename_flush(char[]);
 void read_config(void);
 void replace_newline_with_null(char[]);
 
-/* Below both functions return 0 only on success. */
+/*
+ * Defined in functions.c
+ *
+ * The exapnd functions derive the original path out of relative one.
+ * for ex, user types: ~/xyz
+ * Hence, the full path is: /home/abc/xyz, where abc is home folder of user.
+ * Below both functions return 0 only on success.
+ */
 int expand_file_path(char[] /*dest*/, char[]/*source*/);
 int expand_dir_path(char[] /*dest*/, char[]/*source*/);
 
