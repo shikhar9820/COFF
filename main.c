@@ -152,6 +152,11 @@ int main(int argc, char *argv[]){
     return 0;
   }
 
+  /* Parse our arguments; every option seen by parse_opt will
+     be reflected in arguments. */
+  printf("\n");
+  argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
+
   printf("\nReading configuration file.");
   read_config();
   printf("\nSet Default Path for Questions as: %s",
@@ -160,11 +165,6 @@ int main(int argc, char *argv[]){
          coff_config.test_directory);
   printf("\n----------------------------------------------------------------"
          "----------------\n");
-
-  /* Parse our arguments; every option seen by parse_opt will
-     be reflected in arguments. */
-  printf("\n");
-  argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
 
   printf("\nTest Mode - Showing arguments");
   printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",
@@ -181,4 +181,3 @@ int main(int argc, char *argv[]){
 /* ------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------- */
-
