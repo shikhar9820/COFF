@@ -1,5 +1,7 @@
 #include <limits.h>
 
+#define coff_test_case_input_size 1000
+
 #ifndef __COFF_H__  /* COFF_H */
 
 #define __COFF_H__
@@ -7,7 +9,28 @@
 #define PATH_MAX_len PATH_MAX + 1
 
 int print_err(const char[]);
+/* Structure for questions*/
 
+struct question {
+  char name[coff_test_case_input_size];
+  char question[coff_test_case_input_size];
+  int no_of_constraints;
+  int no_of_example;
+  int no_of_test_cases;
+};
+struct test_case {
+  char input[coff_test_case_input_size];
+  char output[coff_test_case_input_size];
+};
+struct constraints {
+  char Limit[coff_test_case_input_size];
+  char Memory[coff_test_case_input_size];
+  char CPU[coff_test_case_input_size];
+
+};
+struct example {
+  char example[coff_test_case_input_size];
+};
 /* Structure to contain user configuration. - functions.c */
 struct {
   char home[PATH_MAX_len];
