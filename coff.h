@@ -1,12 +1,12 @@
 #include <limits.h>
 
-#define coff_test_case_input_size 1000
-
 #ifndef __COFF_H__  /* COFF_H */
-
 #define __COFF_H__
 
+/* All Declarations start from here. */
+
 #define PATH_MAX_len PATH_MAX + 1
+#define coff_test_case_input_size 1000
 
 int print_err(const char[]);
 /* Structure for questions*/
