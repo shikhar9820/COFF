@@ -24,4 +24,4 @@ $(OBJ): $(DEPS)
 
 .PHONY: clean
 clean:
-	rm -f *.o *.out coff
+	rm -f *.o *.out *.bin *.txt *.dat *.quest *.ans coff
