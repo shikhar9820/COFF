@@ -8,13 +8,13 @@
 
 /* ------------------------------------------------------------------------- */
 
-#define filename_flush(x) char_flush(x, PATH_MAX_len)
+#define filename_flush(x) char_flush(x, PATH_MAX)
 
 /* ------------------------------------------------------------------------- */
 
 static void replace_newline_with_null(char a[]){
   int i;
-  for(i=0; i<PATH_MAX_len; i++){
+  for(i=0; i<PATH_MAX; i++){
     if(a[i] == '\n'){
       a[i] = '\0';
       if(a[i-1] == '/')
@@ -41,9 +41,9 @@ static void show_config(void){
 /* ------------------------------------------------------------------------- */
 
 void read_config(void){
-  char file[PATH_MAX_len];
-  char path[PATH_MAX_len];
-  char temp[PATH_MAX_len];
+  char file[PATH_MAX];
+  char path[PATH_MAX];
+  char temp[PATH_MAX];
 
   printf("\nReading configuration file.");
 
