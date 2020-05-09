@@ -27,7 +27,7 @@ void char_flush(char a[], unsigned int j){
 /* ------------------------------------------------------------------------- */
 
 int expand_file_path(char path[], char file[]){
-  char_flush(path, PATH_MAX_len);
+  char_flush(path, PATH_MAX);
 
   if(file[0] == '~'){
     strcpy(path, coff_config.home);
@@ -66,7 +66,7 @@ int expand_file_path(char path[], char file[]){
 /* ------------------------------------------------------------------------- */
 
 int expand_dir_path(char path[], char dir[]){
-  char_flush(path, PATH_MAX_len);
+  char_flush(path, PATH_MAX);
 
   if(dir[0] == '~'){
     strcpy(path, coff_config.home);

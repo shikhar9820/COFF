@@ -7,31 +7,66 @@
 /* Local Headers */
 #include "coff.h"
 
-void read_string(char a[], unsigned int i){
-  unsigned int j;
+/* ------------------------------------------------------------------------- */
+
+/* It's purpose is to read string of size 'i' and store into char 'a'
+ * and make sure that no '\n' is present at the end due to 'fgets'.
+ */
+static void read_string(char a[], unsigned int i){
+  char_flush(a, i);
   fgets(a, i, stdin);
-  for(j=0; j<=i; j++){
-  i
-  }
+  for(i=0; a[i] != '\0'; i++);
+  i--;
+  if(a[i] == '\n')
+    a[i] = '\0';
 }
 
-int main()
-{
+/* ------------------------------------------------------------------------- */
+
+#define read_input_string(x) read_string(x, INPUT_MAX)
+#define read_quest_string(x) read_string(x, QUEST_MAX)
+
+/* ------------------------------------------------------------------------- */
+
+/* It's purpose is to read a number in the form of string & store it in 'a' */
+static void read_int_string(char a[], const char out[]){
+  int j, i;
+  j=1;
+  while(j == 1){
+    printf("%s", out);
+    read_input_string(a);
+
+    j=0;
+    i=0;
+    while(a[i] != '\0'){
+      if(!isdigit(a[i])){
+        j=1;
+        break;
+      }
+      i++;
+    }
+  }
+}
+/* ------------------------------------------------------------------------- */
+
+int main(){
   FILE *outfile;
-  char file[PATH_MAX_len];
-  char temp[coff_quest_size_len];
+  char file[PATH_MAX];
+  char temp[INPUT_MAX];
   struct question q;
   struct test_case test;
   struct constraints cons;
-  struct example examples;
-  unsigned int i, j;
+  struct example examp;
+  unsigned int i;
 
   read_config();
 
-  char_flush(file, PATH_MAX_len);
+  char_flush(file, PATH_MAX);
   strcpy(file, coff_config.quest_directory);
   strcat(file, "/newQuestion.quest");
-  printf("\nThe Question will be written in: %s", file);
+  printf("\nThe Question will be written in: %s\n", file);
+
+  remove(file);
 
   outfile = fopen(file, "wb");
   if (outfile == NULL) {
@@ -40,130 +75,57 @@ int main()
   }
 
   printf("\nEnter the Question-Name (Max %u characters): ",
-         coff_quest_name_size);
-  fflush(stdin);
-  char_flush(q.name, coff_quest_name_size_len);
-  fscanf(stdin, "%[^\n]s", q.name);
-  q.name[coff_quest_name_size_len] = '\0';
+         INPUT_MAX-1);
+  read_input_string(q.name);
+//  printf("inName: %s", q.name);
 
   printf("\nEnter the Question-Statement (Hit Enter when done writing) (Max \
 %u characters)\nStart: ",
-         coff_quest_size);
-  fflush(stdin);
-  char_flush(q.question, coff_quest_size_len);
-  fscanf(stdin, "%[^\n]s", q.question);
-  q.question[coff_quest_size_len] = '\0';
- 
-  /* Input no of examples */ 
-  j=1;
-  while(j == 1){
-    printf("\nEnter the no of examples: ");
-    fflush(stdin);
-    char_flush(temp, coff_quest_size_len);
-    fscanf(stdin, "%[^\n]s", temp);
-    temp[coff_quest_size_len] = '\0';
+         QUEST_MAX-1);
+  read_quest_string(q.question);
+//  printf("inQuest: %s", q.question);
 
-    i=0;
-    j=0;
-    while(temp[i]!='\0'){
-      if(!isdigit(temp[i])){
-        j=1;
-        break;
-      }
-      i++;
-    }
-  }
-  q.no_of_example = (unsigned int) atoi(temp);
+  read_int_string(temp, "Enter the no of examples: ");
+  q.no_of_examples = (unsigned int) atoi(temp);
 
-  /* Input no of test cases */ 
-  j=1;
-  while(j == 1){
-    printf("\nEnter the no of test cases: ");
-    fflush(stdin);
-    char_flush(temp, coff_quest_size_len);
-    fgets(temp, coff_quest_size, stdin);
-
-    i=0;
-    j=0;
-    while(temp[i]!='\0'){
-      if(!isdigit(temp[i]) && temp[i] != '\n'){
-        j=1;
-        break;
-      }
-      i++;
-    }
-  }
+  read_int_string(temp, "Enter the no of test cases: ");
   q.no_of_test_cases = (unsigned int) atoi(temp);
+
+//  printf("in%u  %u", q.no_of_examples, q.no_of_test_cases);
 
   if (fwrite( &q, sizeof(struct question), 1, outfile) == 0)
     print_err("Contents not written successfully.");
 
   printf("\nEnter Constraints");
-
-  /* Input time limit */ 
-  j=1;
-  while(j == 1){
-    printf("\nEnter time limit (in milli seconds): ");
-    fflush(stdin);
-    char_flush(cons.time_limit, coff_quest_size_len);
-    fgets(cons.time_limit, coff_quest_size, stdin);
-
-    i=0;
-    j=0;
-    while(cons.time_limit[i]!='\0'){
-      if(!isdigit(cons.time_limit[i]) && cons.time_limit[i] != '\n'){
-        j=1;
-        break;
-      }
-      i++;
-    }
-  }
-
-  printf("Enter the max memory usage (in MB): ");
-  fflush(stdin);
-  char_flush(cons.memory, coff_quest_size_len);
-  fgets(cons.memory, coff_quest_size, stdin);
-
-  printf("Enter CPU percentage usage (DO NOT Write \'%%\') : ");
-  fflush(stdin);
-  char_flush(cons.cpu, coff_quest_size_len);
-  fgets(cons.cpu, coff_quest_size, stdin);
+  read_int_string(cons.time_limit, "\nEnter time limit (in milli seconds): " );
+  read_int_string(cons.memory, "\nEnter the max memory usage (in MB): " );
+  read_int_string(cons.cpu, "\nEnter CPU percentage usage (DO NOT\
+ Write \'%%\') : " );
 
   if(fwrite(&cons, sizeof(struct constraints), 1, outfile) == 0)
     print_err("Contents not written successfully.");
 
-  for (i=0; i<q.no_of_example; i++) {
+  for (i=0; i<q.no_of_examples; i++) {
     printf("\n\nExamples no %d", i+1);
     printf("\n Example input: ");
-    fflush(stdin);
-    char_flush(examples.input, coff_quest_size_len);
-    fgets(examples.input, coff_quest_size, stdin);
-
+    read_input_string(examp.input);
     printf(" Example output: ");
-    fflush(stdin);
-    char_flush(examples.output, coff_quest_size_len);
-    fgets(examples.output, coff_quest_size, stdin);
-
-    if(fwrite(&examples, sizeof(struct example), 1, outfile) == 0)
+    read_input_string(examp.output);
+    if(fwrite(&examp, sizeof(struct example), 1, outfile) == 0)
       print_err("Contents not written successfully.");
   }
+
+  printf("\n----------------------------------------------------------------");
 
   for (i=0; i<q.no_of_test_cases; i++) {
     printf("\n\nTest Case no %d", i+1);
     printf("\n Test Case input: ");
-    fflush(stdin);
-    char_flush(test.input, coff_quest_size_len);
-    fgets(test.input, coff_quest_size, stdin);
-
+    read_input_string(test.input);
     printf(" Test Case output: ");
-    fflush(stdin);
-    char_flush(test.output, coff_quest_size_len);
-    fgets(test.output, coff_quest_size, stdin);
-
+    read_input_string(test.output);
     if(fwrite(&test, sizeof(struct test_case), 1, outfile) == 0)
       print_err("Contents not written successfully.");
   }
 
   fclose(outfile);
-  return 0;
 }

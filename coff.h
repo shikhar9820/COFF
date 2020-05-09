@@ -7,15 +7,9 @@
 /* ========================================================================= */
 /* All Declarations start from here. */
 
-#define PATH_MAX_len PATH_MAX + 1
-
-/* ========================================================================= */
 /* Coff Questions and Answers */
-#define coff_quest_name_size 100
-#define coff_quest_size 1000
-
-#define coff_quest_name_size_len  coff_quest_name_size + 1
-#define coff_quest_size_len       coff_quest_size + 1
+#define INPUT_MAX 101  /* Max char limit for inputs */
+#define QUEST_MAX 1001 /* Max char limit for question */
 
 /*
  * The pattern is to define string size as "xyz_size_len" and the input size
@@ -25,35 +19,35 @@
 
 /* Structure for questions*/
 struct question {
-  char name[coff_quest_name_size_len];
-  char question[coff_quest_size_len];
-  unsigned int no_of_example;
+  char name[INPUT_MAX];
+  char question[QUEST_MAX];
+  unsigned int no_of_examples;
   unsigned int no_of_test_cases;
 };
 
 struct test_case {
-  char input[coff_quest_size_len];
-  char output[coff_quest_size_len];
+  char input[INPUT_MAX];
+  char output[INPUT_MAX];
 };
 
 struct constraints {
-  char time_limit[coff_quest_size_len];
-  char memory[coff_quest_size_len];
-  char cpu[coff_quest_size_len];
+  char time_limit[INPUT_MAX];
+  char memory[INPUT_MAX];
+  char cpu[INPUT_MAX];
 
 };
 
 struct example {
-  char input[coff_quest_size_len];
-  char output[coff_quest_size_len];
+  char input[INPUT_MAX];
+  char output[INPUT_MAX];
 };
 
 /* ========================================================================= */
 /* Structure to contain user configuration. - functions.c */
 struct {
-  char home[PATH_MAX_len];
-  char quest_directory[PATH_MAX_len];
-  char test_directory[PATH_MAX_len];
+  char home[PATH_MAX];
+  char quest_directory[PATH_MAX];
+  char test_directory[PATH_MAX];
 }coff_config;
 
 /* ========================================================================= */
