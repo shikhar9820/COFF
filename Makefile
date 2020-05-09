@@ -5,23 +5,24 @@ CFLAGS = -Wall
 DEPS = coff.h
 
 #Object Files   
-OBJ = functions.o read_config.o main.o
+OBJ_COFF = functions.o read_config.o main.o
+OBJ_QUEST = functions.o read_config.o write_question.o
 
 #Default goal
-coff: $(OBJ)
+coff: $(OBJ_COFF)
 	$(CC) $(CFLAGS) -o $@ $^
-	@echo ""
-	@echo "Re-writing config file with default values: ~/.coff_config"
-	@echo ""
-	@echo "PATH TO QUESTION"> ~/.coff_config
-	@echo "~/coff/quest"    >> ~/.coff_config
-	@echo "PATH TO ANSWER"  >> ~/.coff_config
-	@echo "~/coff/ans"      >> ~/.coff_config
-	mkdir -p ~/coff/quest ~/coff/ans
+	./initconfig
+
+#Writing Questions
+coff-quest: $(OBJ_QUEST)
+	$(CC) $(CFLAGS) -o $@ $^
+	./initconfig
 
 #Header dependencies
-$(OBJ): $(DEPS)
+$(OBJ_COFF): $(DEPS)
+
+$(OBJ_QUEST): $(DEPS)
 
 .PHONY: clean
 clean:
-	rm -f *.o *.out *.bin *.txt *.dat *.quest *.ans coff
+	@rm -f *.o *.out *.bin *.txt *.dat *.quest *.ans coff coff-quest

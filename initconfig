@@ -1,0 +1,32 @@
+#!/bin/sh
+
+write_config(){
+  echo "PATH TO QUESTION" >  ~/.coff_config
+  echo "~/coff/quest"     >> ~/.coff_config
+  echo "PATH TO ANSWER"   >> ~/.coff_config
+  echo "~/coff/ans"       >> ~/.coff_config
+}
+
+echo ""
+echo -n "Create/Re-write config file \"~/.coff_config\" with default values? [y/n]: "
+
+while :
+do
+  read CHOICE
+  if [[ "$CHOICE" = "y" || "$CHOICEi" = "Y" ]]
+  then
+    write_config
+    break
+
+  elif [[ "$CHOICE" = "n" || "$CHOICE" = "N" ]]
+  then
+    break
+
+  else
+    echo -n "Enter [y/n]: "
+    continue
+  fi
+
+done
+
+mkdir -p ~/coff/quest ~/coff/ans

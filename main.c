@@ -157,14 +157,7 @@ int main(int argc, char *argv[]){
   printf("\n");
   argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
 
-  printf("\nReading configuration file.");
   read_config();
-  printf("\nSet Default Path for Questions as: %s",
-         coff_config.quest_directory);
-  printf("\nSet Default Path for Answers as:   %s",
-         coff_config.test_directory);
-  printf("\n----------------------------------------------------------------"
-         "----------------\n");
 
   printf("\nTest Mode - Showing arguments");
   printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",
