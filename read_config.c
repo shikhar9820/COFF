@@ -6,8 +6,13 @@
 /* Local Headers */
 #include "coff.h"
 
+/* ------------------------------------------------------------------------- */
 
-void replace_newline_with_null(char a[]){
+#define filename_flush(x) char_flush(x, PATH_MAX_len)
+
+/* ------------------------------------------------------------------------- */
+
+static void replace_newline_with_null(char a[]){
   int i;
   for(i=0; i<PATH_MAX_len; i++){
     if(a[i] == '\n'){
@@ -20,10 +25,27 @@ void replace_newline_with_null(char a[]){
 
 /* ------------------------------------------------------------------------- */
 
+/* Even though read_config.o will be linked with other object files,
+ * below function will be visible to only and only read_config.o.
+ * Using 'static' for this. 
+ */
+static void show_config(void){
+  printf("\nSet Default Path for Questions as: %s",
+         coff_config.quest_directory);
+  printf("\nSet Default Path for Answers as:   %s",
+         coff_config.test_directory);
+  printf("\n----------------------------------------------------------------"
+         "----------------\n");
+}
+
+/* ------------------------------------------------------------------------- */
+
 void read_config(void){
   char file[PATH_MAX_len];
   char path[PATH_MAX_len];
   char temp[PATH_MAX_len];
+
+  printf("\nReading configuration file.");
 
   filename_flush(coff_config.home);
   strcpy(coff_config.home, getenv("HOME"));
@@ -38,6 +60,7 @@ void read_config(void){
     printf("\nConfig file \"~/.coff_config\" not found.");
     expand_dir_path(coff_config.quest_directory, "~/coff/quest");
     expand_dir_path(coff_config.test_directory, "~/coff/ans");
+    show_config();
     return;
   }
 
@@ -98,6 +121,8 @@ void read_config(void){
     filename_flush(coff_config.test_directory);
     expand_dir_path(coff_config.test_directory, "~/coff/ans");
   }
+
+  show_config();
 
   return;
 }

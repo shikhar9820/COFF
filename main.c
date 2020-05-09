@@ -1,8 +1,8 @@
-/* Standard headers */
+/* Standard Headers */
 #include <stdio.h>
 #include <argp.h>
 
-/* Local headers */
+/* Local Headers */
 #include "coff.h"
 
 
@@ -33,35 +33,13 @@ file: `~/.coff_config`\
 const char *argp_program_version = "coff - Offline Judge : 0.01";
 
 /* Documentaion */
-<<<<<<< HEAD
-static const char usage_doc[] =
-  "\ncoff - Offline Judge\
-\n\n If you pass just FILE-NAME,\
-\n          ex: coff -s 1.quest -t sol.c\
-\n By default coff reads:\
-\n - Questions from path: ~/coff/quest\
-\n - Answers from path:   ~/coff/ans\
-\n\nThe default path can be changed by editing configuration file: `~/.coff_config`";
-=======
 static const char usage_doc[] = "\ncoff - Offline Judge";
->>>>>>> 60a04a38f9c5618040b022609951dd27df2c59f9
 
 /* A description of the arguments we accept. */
 //static char args_doc[] = "show test lang quest";
 
 /* The options we understand. */
 static struct argp_option coff_options[] = {
-<<<<<<< HEAD
-  {"show",    's', "FILE-NAME/ FULL-PATH",      0,
-   "Name of Question File" },
-  {"test",    't', "FILE-NAME/ FULL-PATH",      0,
-   "Name of your Program/ Solution File" },
-  {"lang",    'l', "LANG",      0,  
-   "Specify the language of your program. LANG=\n\
-[C, C++, C++11, C++17, JAVA, Python2, Python3]\n" },
-  {"quest",   'q', "FILE-NAME/ FULL-PATH",      0,
-   "Name of Question File" },
-=======
   { /* Option 1 */
     "show",
     's',
@@ -103,7 +81,6 @@ static struct argp_option coff_options[] = {
     "How to modify config file?"
   },
 
->>>>>>> 60a04a38f9c5618040b022609951dd27df2c59f9
   { 0 }
 };
 
@@ -175,27 +152,12 @@ int main(int argc, char *argv[]){
     return 0;
   }
 
-<<<<<<< HEAD
-  read_config();
-
-  /* Parse our arguments; every option seen by parse_opt will
-     be reflected in arguments. */
-  argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
-=======
   /* Parse our arguments; every option seen by parse_opt will
      be reflected in arguments. */
   printf("\n");
   argp_parse (&coff_argp, argc, argv, ARGP_NO_ARGS, 0, &coff_arguments);
 
-  printf("\nReading configuration file.");
   read_config();
-  printf("\nSet Default Path for Questions as: %s",
-         coff_config.quest_directory);
-  printf("\nSet Default Path for Answers as:   %s",
-         coff_config.test_directory);
-  printf("\n----------------------------------------------------------------"
-         "----------------\n");
->>>>>>> 60a04a38f9c5618040b022609951dd27df2c59f9
 
   printf("\nTest Mode - Showing arguments");
   printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",

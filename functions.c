@@ -17,17 +17,17 @@ int print_err(const char a[]){
 
 /* ------------------------------------------------------------------------- */
 
-void filename_flush(char a[]){
+void char_flush(char a[], unsigned int j){
   unsigned int i;
 
-  for(i=0; i<PATH_MAX_len; i++)
+  for(i=0; i<j; i++)
     a[i] = '\0';
 }
 
 /* ------------------------------------------------------------------------- */
 
 int expand_file_path(char path[], char file[]){
-  filename_flush(path);
+  char_flush(path, PATH_MAX_len);
 
   if(file[0] == '~'){
     strcpy(path, coff_config.home);
@@ -66,7 +66,7 @@ int expand_file_path(char path[], char file[]){
 /* ------------------------------------------------------------------------- */
 
 int expand_dir_path(char path[], char dir[]){
-  filename_flush(path);
+  char_flush(path, PATH_MAX_len);
 
   if(dir[0] == '~'){
     strcpy(path, coff_config.home);

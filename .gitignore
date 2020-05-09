@@ -1,4 +1,10 @@
 *.exe
 *.o
 *.out
+*.txt
+*.quest
+*.ans
+*.dat
+*.bin
 /coff
+/coff-quest
