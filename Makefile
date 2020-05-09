@@ -11,12 +11,12 @@ OBJ_QUEST = functions.o read_config.o write_question.o
 #Default goal
 coff: $(OBJ_COFF)
 	$(CC) $(CFLAGS) -o $@ $^
-	./initconfig
+	@./initconfig
 
 #Writing Questions
 coff-quest: $(OBJ_QUEST)
 	$(CC) $(CFLAGS) -o $@ $^
-	./initconfig
+	@./initconfig
 
 #Header dependencies
 $(OBJ_COFF): $(DEPS)
