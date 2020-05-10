@@ -69,7 +69,7 @@ int main(){
   remove(file);
 
   outfile = fopen(file, "wb");
-  if (outfile == NULL) {
+  if (outfile == NULL){
     print_err("Could not open file.");
     exit(1);
   }
@@ -107,7 +107,7 @@ int main(){
 
   for (i=0; i<q.no_of_examples; i++) {
     printf("\n\nExamples no %d", i+1);
-    printf("\n Example input: ");
+    printf("\n Example input:  ");
     read_input_string(examp.input);
     printf(" Example output: ");
     read_input_string(examp.output);

@@ -26,7 +26,7 @@ void char_flush(char a[], unsigned int j){
 
 /* ------------------------------------------------------------------------- */
 
-int expand_file_path(char path[], char file[]){
+int expand_file_path(char path[], const char file[]){
   char_flush(path, PATH_MAX);
 
   if(file[0] == '~'){
@@ -65,7 +65,7 @@ int expand_file_path(char path[], char file[]){
 
 /* ------------------------------------------------------------------------- */
 
-int expand_dir_path(char path[], char dir[]){
+int expand_dir_path(char path[], const char dir[]){
   char_flush(path, PATH_MAX);
 
   if(dir[0] == '~'){

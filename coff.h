@@ -45,6 +45,7 @@ struct example {
 /* ========================================================================= */
 /* Structure to contain user configuration. - functions.c */
 struct {
+  char cwd[PATH_MAX];
   char home[PATH_MAX];
   char quest_directory[PATH_MAX];
   char test_directory[PATH_MAX];
@@ -54,6 +55,7 @@ struct {
 void char_flush(char[], unsigned int);
 void read_config(void);
 int print_err(const char[]);
+int read_question(const char[]);
 
 /* ========================================================================= */
 /*
@@ -64,8 +66,8 @@ int print_err(const char[]);
  * Hence, the full path is: /home/abc/xyz, where abc is home folder of user.
  * Below both functions return 0 only on success.
  */
-int expand_file_path(char[] /*dest*/, char[]/*source*/);
-int expand_dir_path(char[] /*dest*/, char[]/*source*/);
+int expand_file_path(char[] /*dest*/, const char[]/*source*/);
+int expand_dir_path(char[] /*dest*/,  const char[]/*source*/);
 
 /* ========================================================================= */
 #endif /* COOF_H */
