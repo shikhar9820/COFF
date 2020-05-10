@@ -18,6 +18,9 @@ coff-quest: $(OBJ_QUEST)
 	$(CC) $(CFLAGS) -o $@ $^
 	@./initconfig
 
+coff-config:
+	@./initconfig
+
 #Header dependencies
 $(OBJ_COFF): $(DEPS)
 

@@ -74,11 +74,11 @@ static struct argp_option coff_options[] = {
   },
 
   { /* Option 5 */
-    "about-config",
-    'a',
+    "doc",
+    'd',
     0,
     0,
-    "How to modify config file?"
+    "Documentation"
   },
 
   { 0 }
@@ -105,7 +105,7 @@ parse_opt (int key, char *arg, struct argp_state *state){
   struct arguments *coff_arguments = state->input;
   
   switch (key){
-    case 'a':
+    case 'd':
       printf("%s", config_doc);
       break;
     case 's':
@@ -166,6 +166,7 @@ int main(int argc, char *argv[]){
          coff_arguments.lang,
          coff_arguments.quest_file);
 
+  if(coff_arguments.show_file[0] != '-')
     read_question(coff_arguments.show_file);
 
   return 0; 
