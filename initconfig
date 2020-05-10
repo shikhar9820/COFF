@@ -30,3 +30,4 @@ do
 done
 
 mkdir -p ~/coff/quest ~/coff/ans
+cp ./samples/* ~/coff/quest

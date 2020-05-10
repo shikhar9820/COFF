@@ -166,6 +166,8 @@ int main(int argc, char *argv[]){
          coff_arguments.lang,
          coff_arguments.quest_file);
 
+    read_question(coff_arguments.show_file);
+
   return 0; 
 }
 /* ------------------------------------------------------------------------- */

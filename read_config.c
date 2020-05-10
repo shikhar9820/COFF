@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 /* Local Headers */
 #include "coff.h"
@@ -47,8 +48,13 @@ void read_config(void){
 
   printf("\nReading configuration file.");
 
+  /* Get Home folder of the user */
   filename_flush(coff_config.home);
   strcpy(coff_config.home, getenv("HOME"));
+
+  /* Get current working directory of the program */
+  filename_flush(coff_config.cwd);
+  getcwd(coff_config.cwd, PATH_MAX);
 
   filename_flush(file);
   strcpy(file, "~/.coff_config");
