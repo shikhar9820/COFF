@@ -45,7 +45,7 @@ static struct argp_option coff_options[] = {
     's',
     "FILE/PATH ",
     0,
-    "Prints Question "
+    "Prints Question\n"
   },
 
   { /* Option 2 */
@@ -53,7 +53,7 @@ static struct argp_option coff_options[] = {
     't',
     "FILE/PATH ",
     0,
-    "Program/ Solution File"
+    "Program/ Solution File\n"
   },
 
   { /* Option 3 */
@@ -62,7 +62,7 @@ static struct argp_option coff_options[] = {
     "LANG",
     0,  
     "Specify the language of your program. LANG=\n\
-[C, C++, C++11, C++17, JAVA, Python2, Python3]" 
+[C, C++, C++11, C++17, JAVA, Python2, Python3]\n" 
   },
 
   { /* Option 4 */
@@ -70,15 +70,25 @@ static struct argp_option coff_options[] = {
     'q',
     "FILE/PATH",
     0,
-    "Used with --test for Evaluation"
+    "Used with --test for Evaluation\n"
   },
 
   { /* Option 5 */
+    "flag",
+    'f',
+    "FLAG",
+    0,
+    "C/C++ program may need linked flags like,\
+\"-lpthread\", \"-lncurses\", \"-lm\", etc. \
+They should be written inside double quotes.\n"
+  },
+
+  { /* Option 6 */
     "doc",
     'd',
     0,
     0,
-    "Documentation"
+    "Documentation\n"
   },
 
   { 0 }
@@ -91,6 +101,7 @@ struct arguments{
   char *show_file;
   char *quest_file;
   char *lang;
+  char *flag;
 };
 
 /* Parse a single option. */
@@ -105,9 +116,14 @@ parse_opt (int key, char *arg, struct argp_state *state){
   struct arguments *coff_arguments = state->input;
   
   switch (key){
+    case 'f':
+      coff_arguments->flag = arg;
+      break;
+
     case 'd':
       printf("%s", config_doc);
       break;
+
     case 's':
       coff_arguments->show_file = arg;
       break;
@@ -143,6 +159,7 @@ int main(int argc, char *argv[]){
   coff_arguments.test_file = "-";
   coff_arguments.lang = "-";
   coff_arguments.quest_file = "-";
+  coff_arguments.flag = "-";
 
   if(argc == 1){
     fprintf(stderr,"coff: Too few arguments"
@@ -160,11 +177,12 @@ int main(int argc, char *argv[]){
   read_config();
 
   printf("\nTest Mode - Showing arguments");
-  printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",
+  printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\nFlag = %s\n",
          coff_arguments.show_file,
          coff_arguments.test_file,
          coff_arguments.lang,
-         coff_arguments.quest_file);
+         coff_arguments.quest_file,
+         coff_arguments.flag);
 
   if(coff_arguments.show_file[0] != '-')
     show_question(coff_arguments.show_file);
