@@ -1,30 +1,15 @@
 /* Standard Headers */
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include <argp.h>
 
 /* Local Headers */
 #include "coff.h"
 
+/* ------------------------------------------------------------------------- */
 
-static const char config_doc[]="\
-\n-------------------------------------------------------------------------------\
-\n\n If you pass just filename to options,\
-\n              ex: coff -s 1.quest -t sol.c\
-\n   by default coff reads:\
-\n   - Questions from path: ~/coff/quest\
-\n   - Answers from path:   ~/coff/ans\
-\n\n The default path can be changed by editing configuration \
-file: `~/.coff_config`\
-\n\n The ~/.coff_config should be written as:\
-\n        <PROPERTYNAME>\
-\n        <PATH>\
-\n    Where <PROPERTYNAME> name can be either of \
-\n    \"PATH TO ANSWER\" or \"PATH TO QUESTION\" \
-\n    and <PATH> is path to directory.\
-\n      Example: \
-\n        1 |PATH TO QUESTION\
-\n        2 |~/coff/quest\
-\n-------------------------------------------------------------------------------\n";
+#define command_flush(x) char_flush(x, PATH_MAX)
 
 /* ------------------------------------------------------------------------- */
 /* ARGP definitions */
@@ -45,7 +30,7 @@ static struct argp_option coff_options[] = {
     's',
     "FILE/PATH ",
     0,
-    "Prints Question "
+    "Prints Question\n"
   },
 
   { /* Option 2 */
@@ -53,7 +38,7 @@ static struct argp_option coff_options[] = {
     't',
     "FILE/PATH ",
     0,
-    "Program/ Solution File"
+    "Program/ Solution File\n"
   },
 
   { /* Option 3 */
@@ -62,7 +47,7 @@ static struct argp_option coff_options[] = {
     "LANG",
     0,  
     "Specify the language of your program. LANG=\n\
-[C, C++, C++11, C++17, JAVA, Python2, Python3]" 
+[C, C++, C++11, C++17, JAVA, Python2, Python3, Javascript]\n" 
   },
 
   { /* Option 4 */
@@ -70,27 +55,29 @@ static struct argp_option coff_options[] = {
     'q',
     "FILE/PATH",
     0,
-    "Used with --test for Evaluation"
+    "Used with --test for Evaluation\n"
   },
 
   { /* Option 5 */
+    "flag",
+    'f',
+    "FLAG",
+    0,
+    "C/C++ program may need linked flags like, \"-lpthread\", \"-lncurses\",\
+ \"-lm\", etc. Or one may need to pass some arguments to an interpreter like,\
+ \"-c\", \"-q\",etc.\
+They should be written inside double quotes.\n"
+  },
+
+  { /* Option 6 */
     "doc",
     'd',
     0,
     0,
-    "Documentation"
+    "Documentation\n"
   },
 
   { 0 }
-};
-
-/* Used by main to communicate with parse_opt. */
-struct arguments{
-  char *args[4];
-  char *test_file;
-  char *show_file;
-  char *quest_file;
-  char *lang;
 };
 
 /* Parse a single option. */
@@ -99,29 +86,40 @@ parse_opt (int key, char *arg, struct argp_state *state){
   /* Get the input argument from argp_parse, which we
      know is a pointer to our arguments structure. */
 
-//  if(state->argc == 1)
-//    argp_usage(state);
-
   struct arguments *coff_arguments = state->input;
+  unsigned int i;
   
   switch (key){
-    case 'd':
-      printf("%s", config_doc);
+    case 'f':
+      coff_arguments->flag = arg;
+      coff_config.opt |= 0x10;
       break;
+
+    case 'd':
+      system("less documentation");
+      break;
+
     case 's':
-      coff_arguments->show_file = arg;
+      coff_arguments->quest_file = arg;
+      coff_config.opt |= 0x1;
+      coff_config.opt |= 0x8;
       break;
 
     case 't':
       coff_arguments->test_file = arg;
+      coff_config.opt |= 0x2;
       break;
 
     case 'l':
+      for(i=0; arg[i] != '\0'; i++)
+        arg[i] = tolower(arg[i]);
       coff_arguments->lang = arg;
+      coff_config.opt |= 0x4;
       break;
 
     case 'q':
       coff_arguments->quest_file = arg;
+      coff_config.opt |= 0x8;
       break;
 
     default:
@@ -136,13 +134,17 @@ static struct argp coff_argp = { coff_options, parse_opt, 0, usage_doc };
 /* ------------------------------------------------------------------------- */
 int main(int argc, char *argv[]){
 
+  int status; /* value returned by functions */
+
   struct arguments coff_arguments;
 
   /* Default values. */
-  coff_arguments.show_file = "-";
   coff_arguments.test_file = "-";
   coff_arguments.lang = "-";
   coff_arguments.quest_file = "-";
+  coff_arguments.flag = "-";
+
+  coff_config.opt = 0x0;
 
   if(argc == 1){
     fprintf(stderr,"coff: Too few arguments"
@@ -159,16 +161,32 @@ int main(int argc, char *argv[]){
 
   read_config();
 
-  printf("\nTest Mode - Showing arguments");
-  printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\n",
-         coff_arguments.show_file,
-         coff_arguments.test_file,
-         coff_arguments.lang,
-         coff_arguments.quest_file);
+  printf("\nDeveloper Mode - Showing arguments");
+  if( coff_config.opt & 0x1 )
+    printf("\nShow = %s", coff_arguments.quest_file);
+  if( coff_config.opt & 0x2 )
+    printf("\nTest = %s", coff_arguments.test_file);
+  if( coff_config.opt & 0x4 )
+    printf("\nLang = %s", coff_arguments.lang);
+  if( coff_config.opt & 0x8 )
+    printf("\nQuest = %s", coff_arguments.quest_file);
+  if( coff_config.opt & 0x10 )
+    printf("\nFlag = %s", coff_arguments.flag);
 
-  if(coff_arguments.show_file[0] != '-')
-    show_question(coff_arguments.show_file);
+  if( coff_config.opt & 0x1 )
+    show_question(coff_arguments.quest_file);
 
+  if( !((coff_config.opt & 0xE)^0xE) ){
+    status = compile_test(coff_arguments);
+    if(status)
+      exit(status);
+  }
+
+
+
+
+
+  printf("\n");
   return 0; 
 }
 /* ------------------------------------------------------------------------- */

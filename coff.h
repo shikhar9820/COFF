@@ -1,4 +1,5 @@
 #include <limits.h>
+#include <stdint.h>
 
 /* ========================================================================= */
 #ifndef __COFF_H__  /* COFF_H */
@@ -43,19 +44,40 @@ struct example {
 };
 
 /* ========================================================================= */
-/* Structure to contain user configuration. - functions.c */
+/* Structure to contain user configuration. - functions.c
+ * opt:
+ * - 1  = show
+ * - 2  = test
+ * - 4  = lang
+ * - 8  = quest
+ * - 16 = flag
+ */
+
 struct {
   char cwd[PATH_MAX];
   char home[PATH_MAX];
   char quest_directory[PATH_MAX];
   char test_directory[PATH_MAX];
+  uint8_t opt : 5;
 }coff_config;
+
+/* ========================================================================= */
+/* Used by main to communicate with parse_opt. */
+struct arguments{
+  char *test_file;
+  char *quest_file;
+  char *lang;
+  char *flag;
+};
 
 /* ========================================================================= */
 void char_flush(char[], unsigned int);
 void read_config(void);
+
+/* Below functions return zero on success */
 int print_err(const char[]);
 int show_question(const char[]);
+int compile_test(const struct arguments);
 
 /* ========================================================================= */
 /*
