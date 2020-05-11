@@ -161,18 +161,6 @@ int main(int argc, char *argv[]){
 
   read_config();
 
-  printf("\nDeveloper Mode - Showing arguments");
-  if( coff_config.opt & 0x1 )
-    printf("\nShow = %s", coff_arguments.quest_file);
-  if( coff_config.opt & 0x2 )
-    printf("\nTest = %s", coff_arguments.test_file);
-  if( coff_config.opt & 0x4 )
-    printf("\nLang = %s", coff_arguments.lang);
-  if( coff_config.opt & 0x8 )
-    printf("\nQuest = %s", coff_arguments.quest_file);
-  if( coff_config.opt & 0x10 )
-    printf("\nFlag = %s", coff_arguments.flag);
-
   if( coff_config.opt & 0x1 )
     show_question(coff_arguments.quest_file);
 
