@@ -1,17 +1,21 @@
-||==========
-||Coff Usage
-||==========
+===============================================================================
+                           USER DOCUMENTATION
+===============================================================================
+
+============
+ Coff Usage
+============
 
 Usage: coff [-d?V] [-f FLAG] [-l LANG] [-q FILE/PATH] [-s FILE/PATH ]
             [-t FILE/PATH ] [--doc] [--flag=FLAG] [--lang=LANG]
             [--quest=FILE/PATH] [--show=FILE/PATH ] [--test=FILE/PATH ]
             [--help] [--usage] [--version]
 
--------------------------------------------------------------------------------
+===============================================================================
 
-||=========
-||Coff Help
-||=========
+===========
+ Coff Help
+===========
 
 Usage: coff [OPTION...]
 
@@ -42,11 +46,11 @@ coff - Offline Judge
 Mandatory or optional arguments to long options are also mandatory or optional
 for any corresponding short options.
 
--------------------------------------------------------------------------------
+===============================================================================
 
-||==================
-||Configuration File
-||==================
+====================
+ Configuration File
+====================
 
 The configuration file defines the behavious of Coff. When Coff is build
 using "make" command, it creates `~/.coff_config` file and writes default
@@ -68,11 +72,11 @@ The ~/.coff_config should be written as:
         1 |PATH TO QUESTION
         2 |~/coff/quest
 
--------------------------------------------------------------------------------
+===============================================================================
 
-||===========================
-||Languages supported by Coff
-||===========================
+=============================
+ Languages supported by Coff
+=============================
 
 Given that supporting compiler/interpreter is installed on your system,
 Coff supports following languages:
@@ -89,11 +93,11 @@ Coff supports following languages:
      | Javascript/Js |  nodejs               |
      -----------------------------------------
 
--------------------------------------------------------------------------------
+===============================================================================
 
-||========
-||Examples
-||========
+==========
+ Examples
+==========
 
 For following examples we will use:
   - Question file: example1.quest
@@ -115,4 +119,5 @@ For following examples we will use:
 > ./coff -t add.cpp -s example1.quest -l c++11 -f "-lm -lpthread"
 or
 > ./coff -t add.py -s example1.quest -lpython3 -f "-c"
--------------------------------------------------------------------------------
+
+===============================================================================

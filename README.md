@@ -23,6 +23,12 @@ Offline Judge for Competitive Coding
 
 ---
 
+# How to reset configuration file?
+
+1) Run `make coff-config`.
+
+---
+
 # Core Developers/ Contributors
 
 1) [Shikhar Kataruka](https://github.com/shikhar9820)

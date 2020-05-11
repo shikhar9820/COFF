@@ -45,7 +45,11 @@ struct example {
 
 /* ========================================================================= */
 /* Structure to contain user configuration. - functions.c
- * opt:
+ *
+ * We use "opt" as a set of bit flags to know which all options were passed
+ * in terminal with coff. The values of those options get stored in the object
+ * of "struct arguments".
+ * Value of opt when bitwise &ed with 0x1, 0x2, 0x4, 0x8 and 0x16:
  * - 1  = show
  * - 2  = test
  * - 4  = lang
@@ -62,12 +66,15 @@ struct {
 }coff_config;
 
 /* ========================================================================= */
-/* Used by main to communicate with parse_opt. */
+/* Used by main to communicate with parse_opt.
+ * The values passed with options, on terminal, are stored in these.
+ */
 struct arguments{
-  char *test_file;
-  char *quest_file;
-  char *lang;
-  char *flag;
+  char *test_file;  //Pointer to value passed with '-t' or '--test'.
+  char *quest_file; //Pointer to value passed with '-q' or '-s' or
+                    //'--quest' or '--show'.
+  char *lang;       //Pointer to value passed with '-l' or '--lang'.
+  char *flag;       //Pointer to value passed with '-f' or '--flag'.
 };
 
 /* ========================================================================= */
