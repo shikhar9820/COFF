@@ -167,7 +167,7 @@ int main(int argc, char *argv[]){
          coff_arguments.quest_file);
 
   if(coff_arguments.show_file[0] != '-')
-    read_question(coff_arguments.show_file);
+    show_question(coff_arguments.show_file);
 
   return 0; 
 }

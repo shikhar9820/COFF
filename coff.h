@@ -55,7 +55,7 @@ struct {
 void char_flush(char[], unsigned int);
 void read_config(void);
 int print_err(const char[]);
-int read_question(const char[]);
+int show_question(const char[]);
 
 /* ========================================================================= */
 /*

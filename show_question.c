@@ -9,7 +9,7 @@
 
 /* ------------------------------------------------------------------------- */
 
-int read_question(const char file[]){
+int show_question(const char file[]){
   FILE *infile;
 
   char path[PATH_MAX];
