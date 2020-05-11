@@ -1,0 +1,118 @@
+||==========
+||Coff Usage
+||==========
+
+Usage: coff [-d?V] [-f FLAG] [-l LANG] [-q FILE/PATH] [-s FILE/PATH ]
+            [-t FILE/PATH ] [--doc] [--flag=FLAG] [--lang=LANG]
+            [--quest=FILE/PATH] [--show=FILE/PATH ] [--test=FILE/PATH ]
+            [--help] [--usage] [--version]
+
+-------------------------------------------------------------------------------
+
+||=========
+||Coff Help
+||=========
+
+Usage: coff [OPTION...]
+
+coff - Offline Judge
+
+  -d, --doc                  Documentation
+
+  -f, --flag=FLAG            C/C++ program may need linked flags like,
+                             "-lpthread", "-lncurses", "-lm", etc. Or one may
+                             need to pass some arguments to an interpreter
+                             like, "-c", "-q",etc.They should be written inside
+                             double quotes.
+
+  -l, --lang=LANG            Specify the language of your program. LANG=
+                             [C, C++, C++11, C++17, JAVA, Python2, Python3,
+                             Javascript]
+
+  -q, --quest=FILE/PATH      Used with --test for Evaluation
+
+  -s, --show=FILE/PATH       Prints Question
+
+  -t, --test=FILE/PATH       Program/ Solution File
+
+  -?, --help                 Give this help list
+      --usage                Give a short usage message
+  -V, --version              Print program version
+
+Mandatory or optional arguments to long options are also mandatory or optional
+for any corresponding short options.
+
+-------------------------------------------------------------------------------
+
+||==================
+||Configuration File
+||==================
+
+The configuration file defines the behavious of Coff. When Coff is build
+using "make" command, it creates `~/.coff_config` file and writes default
+values in it.
+
+If you pass just filename to options, ex: "coff -s 1.quest -t sol.c"
+Then, by default coff reads:
+   - Questions from path: ~/coff/quest
+   - Answers from path:   ~/coff/ans
+
+The default path can be changed by editing configuration file: `~/.coff_config`
+
+The ~/.coff_config should be written as:
+        <PROPERTYNAME>
+        <PATH>
+  Where <PROPERTYNAME> name can be either of "PATH TO ANSWER" or "PATH TO
+  QUESTION" and <PATH> is path to directory.
+      Example: 
+        1 |PATH TO QUESTION
+        2 |~/coff/quest
+
+-------------------------------------------------------------------------------
+
+||===========================
+||Languages supported by Coff
+||===========================
+
+Given that supporting compiler/interpreter is installed on your system,
+Coff supports following languages:
+     -----------------------------------------
+     |     Lang      |  Compiler/Interpreter |
+     ----------------------------------------
+     | C             |  gcc                  |
+     | C++           |  g++                  |
+     | C++11         |  g++                  |
+     | C++17         |  g++                  |
+     | Python2       |  python2              |
+     | Python3       |  python3              |
+     | Java          |  openjdk              |
+     | Javascript/Js |  nodejs               |
+     -----------------------------------------
+
+-------------------------------------------------------------------------------
+
+||========
+||Examples
+||========
+
+For following examples we will use:
+  - Question file: example1.quest
+  - Testfile:      add.c or add.cpp or add.js or add.py, depends on example.
+
+## To show a Question.
+> ./coff -s example1.quest
+
+## To run a test.
+> ./coff -t add.c -q example1.quest -l c
+
+## To run a test and show question.
+> ./coff -t add.c -s example1.quest -l c
+
+## To run a C++17 program.
+> ./coff -t add.cpp -s example1.quest -l c++17
+
+## To run a test and pass necessary flag/arguments.
+> ./coff -t add.cpp -s example1.quest -l c++11 -f "-lm -lpthread"
+or
+> ./coff -t add.py -s example1.quest -lpython3 -f "-c"
+-------------------------------------------------------------------------------

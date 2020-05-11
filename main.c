@@ -12,28 +12,6 @@
 #define command_flush(x) char_flush(x, PATH_MAX)
 
 /* ------------------------------------------------------------------------- */
-
-static const char config_doc[]="\
-\n-------------------------------------------------------------------------------\
-\n\n If you pass just filename to options,\
-\n              ex: coff -s 1.quest -t sol.c\
-\n   by default coff reads:\
-\n   - Questions from path: ~/coff/quest\
-\n   - Answers from path:   ~/coff/ans\
-\n\n The default path can be changed by editing configuration \
-file: `~/.coff_config`\
-\n\n The ~/.coff_config should be written as:\
-\n        <PROPERTYNAME>\
-\n        <PATH>\
-\n    Where <PROPERTYNAME> name can be either of \
-\n    \"PATH TO ANSWER\" or \"PATH TO QUESTION\" \
-\n    and <PATH> is path to directory.\
-\n      Example: \
-\n        1 |PATH TO QUESTION\
-\n        2 |~/coff/quest\
-\n-------------------------------------------------------------------------------\n";
-
-/* ------------------------------------------------------------------------- */
 /* ARGP definitions */
 
 /* Version */
@@ -69,7 +47,7 @@ static struct argp_option coff_options[] = {
     "LANG",
     0,  
     "Specify the language of your program. LANG=\n\
-[C, C++, C++11, C++17, JAVA, Python2, Python3]\n" 
+[C, C++, C++11, C++17, JAVA, Python2, Python3, Javascript]\n" 
   },
 
   { /* Option 4 */
@@ -85,8 +63,9 @@ static struct argp_option coff_options[] = {
     'f',
     "FLAG",
     0,
-    "C/C++ program may need linked flags like,\
-\"-lpthread\", \"-lncurses\", \"-lm\", etc. \
+    "C/C++ program may need linked flags like, \"-lpthread\", \"-lncurses\",\
+ \"-lm\", etc. Or one may need to pass some arguments to an interpreter like,\
+ \"-c\", \"-q\",etc.\
 They should be written inside double quotes.\n"
   },
 
@@ -117,7 +96,7 @@ parse_opt (int key, char *arg, struct argp_state *state){
       break;
 
     case 'd':
-      printf("%s", config_doc);
+      system("less documentation");
       break;
 
     case 's':
@@ -182,7 +161,7 @@ int main(int argc, char *argv[]){
 
   read_config();
 
-  printf("\nTest Mode - Showing arguments");
+  printf("\nDeveloper Mode - Showing arguments");
   if( coff_config.opt & 0x1 )
     printf("\nShow = %s", coff_arguments.quest_file);
   if( coff_config.opt & 0x2 )

@@ -32,6 +32,11 @@ int compile_test(const struct arguments coff_arguments){
       strcmp("python3", coff_arguments.lang) == 0 )
     return 0;
 
+  /* --Javascript */
+  if( strcmp("javascript", coff_arguments.lang) == 0 ||
+      strcmp("js", coff_arguments.lang) == 0 )
+
+    return 0;
   /* --C-- */
   if( strcmp("c", coff_arguments.lang) == 0 ){
     return c_cpp("gcc", coff_arguments);
