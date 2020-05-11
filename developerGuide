@@ -69,6 +69,8 @@ unreadable, but the order tand types of contents, stored in it are:
 values are stored in "struct arguments" object in "main.c" and
 "coff_config.opt" flags are set respectively. (Refer "coff.h").
 
+-------------------------------------------------------------------------------
+
 How "coff_config.opt" flag is used?
   Now, this variable is of 8 bits out of which only first 5 bits will be used
   and rest will be discarded. Since it is of type 'unsigned', if 5th bit is set
@@ -93,5 +95,10 @@ run a test file until one knows:
   3) - Language      (Passed with "-l")
 
 To check if all these flags are set, do bitwise operations accordingly.
+
+-------------------------------------------------------------------------------
+
+Now, the first part is to read configuration file and set the values of
+"coff_config". This is done right after parsing arguments.
 
 ===============================================================================

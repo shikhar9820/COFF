@@ -62,6 +62,8 @@ void read_config(void){
 
   FILE *confile = fopen(path, "r");
 
+  expand_dir_path(coff_config.null_directory, "~/coff/null");
+
   if(!confile){
     printf("\nConfig file \"~/.coff_config\" not found.");
     expand_dir_path(coff_config.quest_directory, "~/coff/quest");
