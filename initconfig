@@ -35,6 +35,6 @@ else
   write_config
 fi
 
-mkdir -p ~/coff/quest ~/coff/ans
+mkdir -p ~/coff/quest ~/coff/ans ~/coff/null
 cp ./samples/* ~/coff/quest
 echo ""

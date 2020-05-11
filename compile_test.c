@@ -72,6 +72,7 @@ static int c_cpp(const char compiler[], const struct arguments coff_arguments){
     return status;
 
   command_flush(command);
+  chdir(coff_config.null_directory);
   strcpy(command, compiler);
   strcat(command, " -o coff_testing ");
   strcat(command, path);
