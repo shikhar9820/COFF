@@ -1,7 +1,7 @@
 /* Standard Headers */
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <ctype.h>
 #include <argp.h>
 
 /* Local Headers */
@@ -101,14 +101,6 @@ They should be written inside double quotes.\n"
   { 0 }
 };
 
-/* Used by main to communicate with parse_opt. */
-struct arguments{
-  char *test_file;
-  char *quest_file;
-  char *lang;
-  char *flag;
-};
-
 /* Parse a single option. */
 static error_t
 parse_opt (int key, char *arg, struct argp_state *state){
@@ -116,6 +108,7 @@ parse_opt (int key, char *arg, struct argp_state *state){
      know is a pointer to our arguments structure. */
 
   struct arguments *coff_arguments = state->input;
+  unsigned int i;
   
   switch (key){
     case 'f':
@@ -139,6 +132,8 @@ parse_opt (int key, char *arg, struct argp_state *state){
       break;
 
     case 'l':
+      for(i=0; arg[i] != '\0'; i++)
+        arg[i] = tolower(arg[i]);
       coff_arguments->lang = arg;
       coff_config.opt |= 0x4;
       break;
@@ -160,11 +155,7 @@ static struct argp coff_argp = { coff_options, parse_opt, 0, usage_doc };
 /* ------------------------------------------------------------------------- */
 int main(int argc, char *argv[]){
 
-  int status;             /* return status by child program */
-  char command[PATH_MAX]; /* To pass command to "system()" */
-  char path[PATH_MAX];
-  char flag[PATH_MAX];
-  char temp[PATH_MAX];
+  int status; /* value returned by functions */
 
   struct arguments coff_arguments;
 
@@ -203,8 +194,20 @@ int main(int argc, char *argv[]){
   if( coff_config.opt & 0x10 )
     printf("\nFlag = %s", coff_arguments.flag);
 
-  printf("\n");
+  if( coff_config.opt & 0x1 )
+    show_question(coff_arguments.quest_file);
 
+  if( !((coff_config.opt & 0xE)^0xE) ){
+    status = compile_test(coff_arguments);
+    if(status)
+      exit(status);
+  }
+
+
+
+
+
+  printf("\n");
   return 0; 
 }
 /* ------------------------------------------------------------------------- */

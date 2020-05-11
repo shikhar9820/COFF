@@ -62,10 +62,22 @@ struct {
 }coff_config;
 
 /* ========================================================================= */
+/* Used by main to communicate with parse_opt. */
+struct arguments{
+  char *test_file;
+  char *quest_file;
+  char *lang;
+  char *flag;
+};
+
+/* ========================================================================= */
 void char_flush(char[], unsigned int);
 void read_config(void);
+
+/* Below functions return zero on success */
 int print_err(const char[]);
 int show_question(const char[]);
+int compile_test(const struct arguments);
 
 /* ========================================================================= */
 /*
