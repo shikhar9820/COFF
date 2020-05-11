@@ -180,10 +180,25 @@ int main(int argc, char *argv[]){
     status = compile_test(coff_arguments);
     if(status)
       exit(status);
+
+    printf("\n");
+    return 0;
   }
 
+  else if( !(coff_config.opt & 0x2) ){
+    print_err("Please pass name/path of your program with \"-t\" or \
+\"--test\" option.");
+  }
 
+  else if( !(coff_config.opt & 0x4) ){
+    print_err("Please pass programming language used by you with \"-l\" or \
+\"--lang\" option.");
+  }
 
+  else if( !(coff_config.opt & 0x8) ){
+    print_err("Please pass name/path of the question with \"-q\" or \"-s\" or \
+\"--quest\" or \"--show\" option");
+  }
 
 
   printf("\n");
