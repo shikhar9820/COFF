@@ -1,0 +1,97 @@
+===============================================================================
+                             DEVELOPERS GUIDE
+===============================================================================
+
+`coff` and `coff-quest` are two different executables.
+  - Run `make coff` to build "coff".
+  - Run `make coff-quest` to build "coff-quest".
+  - Run `make coff-config` to re-write config file with default values.
+
+===============================================================================
+
+==============
+ Coding Style
+==============
+
+ 1) - Use "space" instead of "tab".
+ 2) - Use 2 spaces for nesting.
+ 3) - Follow this form:
+           1| if/else if/functions/loops ( arguments ) {
+           2| ....
+           n| }
+ 4) - Max 80 characters in a line.
+ 5) - Always put a space before and after these characters: '(', ')', '{', '}'.
+      Don't put space after them if they are at the ending of a line.
+ 6) - A space should be there before and after '=', '+', '-', '/', '%', etc. if
+      they are not used in loops and if/else if.
+
+===============================================================================
+
+============
+ coff-quest
+============
+
+This program is used to make questions for Coff and write them in
+"xyz/newQuestion.quest" file. Here, the path "xyz" is defined by
+"coff_config.quest_directory" (Refer "coff.h").
+
+This program is used to make question files. We need:
+  - struct question{...};
+  - struct test_case{...};
+  - struct constraints{...};
+  - struct example{...};
+
+objects to make it run. These structures are defined in "coff.h". Let's say
+their object files are:
+  - struct question    q;
+  - struct test_case   test;
+  - struct constraints cons;
+  - struct example     examp;
+
+Now, the newQuestion file, created by coff-quest, is binary and maybe
+unreadable, but the order tand types of contents, stored in it are:
+
+       -----------------------------------
+      1|q
+       |cons
+       |q.no_of_examples number of examp
+       |q.no_of_test_cases number of test
+    EOF|
+       -----------------------------------
+
+===============================================================================
+
+======
+ coff
+======
+
+"argp.h" is used to parse commandline arguments passed in terminal. Their
+values are stored in "struct arguments" object in "main.c" and
+"coff_config.opt" flags are set respectively. (Refer "coff.h").
+
+How "coff_config.opt" flag is used?
+  Now, this variable is of 8 bits out of which only first 5 bits will be used
+  and rest will be discarded. Since it is of type 'unsigned', if 5th bit is set
+  '1', then it won't make it a negative number.
+
+  If user has passed "-s" option, then 0th bit will be set 1.
+  If user has passed "-t" option, then 1st bit will be set 1.
+  If user has passed "-l" option, then 2nd bit will be set 1.
+  If user has passed "-q" option, then 3rd bit will be set 1.
+  If user has passed "-f" option, then 4th bit will be set 1.
+
+  To set a particular flag, just do bitwise-or with that bit valued number.
+  For ex: to set 2nd bit, do bitwise-or with 0x4.
+
+  To check if a particular flag is set or not, use bitwise-and.
+  For ex: to check 2nd but, do bitwise-and with 0x4.
+
+These bitflags help Coff to function correctly. For example one may not wanna
+run a test file until one knows:
+  1) - Question file (passed with "-s" or "-q")
+  2) - Test file     (Passed with "-t")
+  3) - Language      (Passed with "-l")
+
+To check if all these flags are set, do bitwise operations accordingly.
+
+===============================================================================
