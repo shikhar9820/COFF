@@ -1,4 +1,5 @@
 #include <limits.h>
+#include <stdint.h>
 
 /* ========================================================================= */
 #ifndef __COFF_H__  /* COFF_H */
@@ -43,12 +44,21 @@ struct example {
 };
 
 /* ========================================================================= */
-/* Structure to contain user configuration. - functions.c */
+/* Structure to contain user configuration. - functions.c
+ * opt:
+ * - 1  = show
+ * - 2  = test
+ * - 4  = lang
+ * - 8  = quest
+ * - 16 = flag
+ */
+
 struct {
   char cwd[PATH_MAX];
   char home[PATH_MAX];
   char quest_directory[PATH_MAX];
   char test_directory[PATH_MAX];
+  uint8_t opt : 5;
 }coff_config;
 
 /* ========================================================================= */

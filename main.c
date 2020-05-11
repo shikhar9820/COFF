@@ -1,10 +1,17 @@
 /* Standard Headers */
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <argp.h>
 
 /* Local Headers */
 #include "coff.h"
 
+/* ------------------------------------------------------------------------- */
+
+#define command_flush(x) char_flush(x, PATH_MAX)
+
+/* ------------------------------------------------------------------------- */
 
 static const char config_doc[]="\
 \n-------------------------------------------------------------------------------\
@@ -96,9 +103,7 @@ They should be written inside double quotes.\n"
 
 /* Used by main to communicate with parse_opt. */
 struct arguments{
-  char *args[4];
   char *test_file;
-  char *show_file;
   char *quest_file;
   char *lang;
   char *flag;
@@ -110,14 +115,12 @@ parse_opt (int key, char *arg, struct argp_state *state){
   /* Get the input argument from argp_parse, which we
      know is a pointer to our arguments structure. */
 
-//  if(state->argc == 1)
-//    argp_usage(state);
-
   struct arguments *coff_arguments = state->input;
   
   switch (key){
     case 'f':
       coff_arguments->flag = arg;
+      coff_config.opt |= 0x10;
       break;
 
     case 'd':
@@ -125,19 +128,24 @@ parse_opt (int key, char *arg, struct argp_state *state){
       break;
 
     case 's':
-      coff_arguments->show_file = arg;
+      coff_arguments->quest_file = arg;
+      coff_config.opt |= 0x1;
+      coff_config.opt |= 0x8;
       break;
 
     case 't':
       coff_arguments->test_file = arg;
+      coff_config.opt |= 0x2;
       break;
 
     case 'l':
       coff_arguments->lang = arg;
+      coff_config.opt |= 0x4;
       break;
 
     case 'q':
       coff_arguments->quest_file = arg;
+      coff_config.opt |= 0x8;
       break;
 
     default:
@@ -152,14 +160,21 @@ static struct argp coff_argp = { coff_options, parse_opt, 0, usage_doc };
 /* ------------------------------------------------------------------------- */
 int main(int argc, char *argv[]){
 
+  int status;             /* return status by child program */
+  char command[PATH_MAX]; /* To pass command to "system()" */
+  char path[PATH_MAX];
+  char flag[PATH_MAX];
+  char temp[PATH_MAX];
+
   struct arguments coff_arguments;
 
   /* Default values. */
-  coff_arguments.show_file = "-";
   coff_arguments.test_file = "-";
   coff_arguments.lang = "-";
   coff_arguments.quest_file = "-";
   coff_arguments.flag = "-";
+
+  coff_config.opt = 0x0;
 
   if(argc == 1){
     fprintf(stderr,"coff: Too few arguments"
@@ -177,15 +192,18 @@ int main(int argc, char *argv[]){
   read_config();
 
   printf("\nTest Mode - Showing arguments");
-  printf("\nShow = %s\nTest = %s\nLang = %s\nQuest = %s\nFlag = %s\n",
-         coff_arguments.show_file,
-         coff_arguments.test_file,
-         coff_arguments.lang,
-         coff_arguments.quest_file,
-         coff_arguments.flag);
+  if( coff_config.opt & 0x1 )
+    printf("\nShow = %s", coff_arguments.quest_file);
+  if( coff_config.opt & 0x2 )
+    printf("\nTest = %s", coff_arguments.test_file);
+  if( coff_config.opt & 0x4 )
+    printf("\nLang = %s", coff_arguments.lang);
+  if( coff_config.opt & 0x8 )
+    printf("\nQuest = %s", coff_arguments.quest_file);
+  if( coff_config.opt & 0x10 )
+    printf("\nFlag = %s", coff_arguments.flag);
 
-  if(coff_arguments.show_file[0] != '-')
-    show_question(coff_arguments.show_file);
+  printf("\n");
 
   return 0; 
 }
