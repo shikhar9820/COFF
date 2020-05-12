@@ -14,6 +14,29 @@ Offline Judge for Competitive Coding
 
 ---
 
+# Start with Coff
+
+As soon as a person builds Coff using `make`, an example question is saved to
+`~/coff/quest` directory, with name __"example1.quest"__ .
+
+You can see the question by running:
+
+```shell
+./coff -s example1.quest
+```
+
+Write a program for it and save it `~/coff/ans`. Lets say you made __"1.c"__.
+Type:
+
+```shell
+./coff -q example1.quest -l c -t 1.c
+```
+
+All program files must be saved inside `~/coff/ans` or as in the path specified
+in configuration file, else provide full path to your profram.
+
+---
+
 # How to write questions?
 
 1) Follow till Step 2 of *"How to run this Project?"*
@@ -26,6 +49,22 @@ Offline Judge for Competitive Coding
 # How to reset configuration file?
 
 1) Run `make coff-config`.
+
+---
+
+# Documentation
+
+To see user, documentation, run:
+
+```shell
+./coff -d
+```
+
+or
+
+```shell
+./coff --doc
+```
 
 ---
 

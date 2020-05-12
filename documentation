@@ -48,6 +48,24 @@ for any corresponding short options.
 
 ===============================================================================
 
+=================
+ Start With Coff
+=================
+
+As soon as a person builds Coff using `make`, an example question is saved to
+`~/coff/quest` directory, with name "example1.quest" .
+
+You can see the question by running:
+>./coff -s example1.quest
+
+Write a program for it and save it `~/coff/ans`. Lets say you made "1.c". Type:
+>./coff -q example1.quest -l c -t 1.c
+
+All program files must be saved inside `~/coff/ans` or as in the path specified
+in configuration file, else provide full path to your profram.
+
+===============================================================================
+
 ====================
  Configuration File
 ====================

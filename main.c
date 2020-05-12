@@ -8,10 +8,6 @@
 #include "coff.h"
 
 /* ------------------------------------------------------------------------- */
-
-#define command_flush(x) char_flush(x, PATH_MAX)
-
-/* ------------------------------------------------------------------------- */
 /* ARGP definitions */
 
 /* Version */
@@ -168,6 +164,8 @@ int main(int argc, char *argv[]){
     status = compile_test(coff_arguments);
     if(status)
       exit(status);
+
+    test_question(coff_arguments);
 
     printf("\n");
     return 0;
