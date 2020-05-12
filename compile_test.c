@@ -57,8 +57,8 @@ int compile_test(const struct arguments coff_arguments){
     return c_cpp("g++ -std=c++17", coff_arguments);
   }
 
-
-  return 0;
+  /* If language not supported, return 1 */
+  return 1;
 }
 /* ------------------------------------------------------------------------- */
 

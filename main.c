@@ -165,6 +165,8 @@ int main(int argc, char *argv[]){
     if(status)
       exit(status);
 
+    test_question(coff_arguments);
+
     printf("\n");
     return 0;
   }

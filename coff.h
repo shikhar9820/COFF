@@ -86,7 +86,7 @@ void read_config(void);
 int print_err(const char[]);
 int show_question(const char[]);
 int compile_test(const struct arguments);
-
+int test_question(const struct arguments);
 /* ========================================================================= */
 /*
  * Defined in functions.c
