@@ -12,6 +12,7 @@
 /* ------------------------------------------------------------------------- */
 
 #define command_flush(x) char_flush(x, PATH_MAX)
+#define input_flush(x) char_flush(x, INPUT_MAX)
 
 /* ------------------------------------------------------------------------- */
 
@@ -130,7 +131,6 @@ static int run_question(const char test_input[], const char test_output[]){
   }
 
   else if (pid == 0){
-    sleep(1);
     close(pipe_p_out[1]); //Close write end of p_out
     close(pipe_c_out[0]); //Close read end of c_out
 
@@ -156,12 +156,16 @@ static int run_question(const char test_input[], const char test_output[]){
 
     pid = wait(&status); //wait for child to end
 
+    input_flush(child_output);
     while(read(pipe_c_out[0], child_output, INPUT_MAX)>0);
 
     if(strcmp(child_output, test_output) == 0)
-      printf("Passed");
+      printf("PASSED");
     else
-      printf("Failed");
+      printf("FAILED");
+
+    printf("\n  Expected Output: %s", test_output);
+    printf("\n  Your Output    : %s\n", child_output);
 
     close(pipe_c_out[0]);
     close(pipe_p_out[1]);
