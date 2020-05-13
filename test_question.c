@@ -52,6 +52,7 @@ int test_question(const struct arguments coff_arguments){
     strcat(argv[0], "/coff_testing");
   }
 
+  /* Python2 and 3 */
   else if(coff_arguments.lang[0] == 'p'){
     if(strcmp(coff_arguments.lang, "python2") == 0)
       strcpy(argv[0], "/bin/python2");
@@ -71,6 +72,24 @@ int test_question(const struct arguments coff_arguments){
       strcpy(argv[2], coff_arguments.flag);
   }
 
+  /* Javascript */
+  else if(strcmp(coff_arguments.lang, "js") == 0 ||
+          strcmp(coff_arguments.lang, "javascript") == 0){
+    strcpy(argv[0], "/bin/node");
+
+    chdir(coff_config.test_directory);
+    status = expand_file_path(path, coff_arguments.test_file);
+
+    if(status)
+     return status;
+
+    strcpy(argv[1], path);
+
+    if(coff_config.opt & 0x10)
+      strcpy(argv[2], coff_arguments.flag);
+  }
+
+  /* Compiler not supported */
   else{
     free(argv[0]);
     free(argv[1]);
