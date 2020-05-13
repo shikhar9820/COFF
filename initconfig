@@ -15,7 +15,7 @@ then
   while :
   do
     read CHOICE
-    if [[ "$CHOICE" = "y" || "$CHOICEi" = "Y" ]]
+    if [[ "$CHOICE" = "y" || "$CHOICE" = "Y" ]]
     then
       write_config
       break
