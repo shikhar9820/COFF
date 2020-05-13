@@ -64,6 +64,10 @@ Write a program for it and save it `~/coff/ans`. Lets say you made "1.c". Type:
 All program files must be saved inside `~/coff/ans` or as in the path specified
 in configuration file, else provide full path to your profram.
 
+
+One can also find sample C/C++, Python and Javascript programs which were used
+in testing of Coff. They are in `test_programs/` directory.
+
 ===============================================================================
 
 ====================
@@ -107,7 +111,6 @@ Coff supports following languages:
      | C++17         |  g++                  |
      | Python2       |  python2              |
      | Python3       |  python3              |
-     | Java          |  openjdk              |
      | Javascript/Js |  nodejs               |
      -----------------------------------------
 

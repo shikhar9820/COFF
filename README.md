@@ -35,6 +35,9 @@ Type:
 All program files must be saved inside `~/coff/ans` or as in the path specified
 in configuration file, else provide full path to your profram.
 
+One can also find sample C/C++, Python and Javascript programs which were used
+in testing of Coff. They are in `test_programs/` directory.
+
 ---
 
 # How to write questions?
