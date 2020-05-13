@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 
 static int run_question(const char[], const char[]);
+static void format_test_case_input(char[], const char[]);
 char *argv[3];
 
 /* ------------------------------------------------------------------------- */
@@ -33,6 +34,7 @@ int test_question(const struct arguments coff_arguments){
 
   unsigned int i;
 
+  int status;
 
   for(i=0; i<3; i++)
     argv[i] = malloc(PATH_MAX);
@@ -48,6 +50,25 @@ int test_question(const struct arguments coff_arguments){
   if(coff_arguments.lang[0] == 'c'){
     strcpy(argv[0], coff_config.null_directory );
     strcat(argv[0], "/coff_testing");
+  }
+
+  else if(coff_arguments.lang[0] == 'p'){
+    if(strcmp(coff_arguments.lang, "python2") == 0)
+      strcpy(argv[0], "/bin/python2");
+
+    else if(strcmp(coff_arguments.lang, "python3") == 0)
+      strcpy(argv[0], "/bin/python3");
+
+    chdir(coff_config.test_directory);
+    status = expand_file_path(path, coff_arguments.test_file);
+
+    if(status)
+     return status;
+
+    strcpy(argv[1], path);
+
+    if(coff_config.opt & 0x10)
+      strcpy(argv[2], coff_arguments.flag);
   }
 
   else{
@@ -107,11 +128,11 @@ int test_question(const struct arguments coff_arguments){
 
 static int run_question(const char test_input[], const char test_output[]){
   char child_output[INPUT_MAX];
-
+  char test_format_input[INPUT_MAX];
   int status;
   int pipe_p_out[2]; // Use this for stdout of parent
   int pipe_c_out[2];  //Use this for stdout of child
-
+  unsigned int i;
   pid_t pid;
 
   status = pipe(pipe_p_out);
@@ -152,12 +173,21 @@ static int run_question(const char test_input[], const char test_output[]){
     close(pipe_p_out[0]); //Close read end of p_out
     close(pipe_c_out[1]); //Close write end of c_out
 
-    write(pipe_p_out[1], test_input, INPUT_MAX);
+    format_test_case_input(test_format_input, test_input);
+
+    write(pipe_p_out[1], test_format_input, INPUT_MAX);
 
     pid = wait(&status); //wait for child to end
 
     input_flush(child_output);
-    while(read(pipe_c_out[0], child_output, INPUT_MAX)>0);
+    while((i=read(pipe_c_out[0], child_output, INPUT_MAX))>0);
+
+    /* Python print statements end with '\n', hence the chid output
+     * recieved also contains '\n' at end which can cause error.
+     */
+    i = strlen(child_output);
+    if(child_output[i-1] == '\n')
+      child_output[i-1] = '\0';
 
     if(strcmp(child_output, test_output) == 0)
       printf("PASSED");
@@ -173,11 +203,29 @@ static int run_question(const char test_input[], const char test_output[]){
     return status;
   }
 
-
-
-
  return 1;
 }
 
+/* ------------------------------------------------------------------------- */
+
+/* 
+ *The test-case inputs, combined in a string and written in pipe by parent,
+ * need to be separated by '\n' character.
+ */
+static void format_test_case_input(char result[], const char a[]){
+  unsigned int i;
+  input_flush(result);
+
+  for(i=0; a[i] != '\0'; i++){
+    if(a[i] == ' ')
+      result[i] = '\n';
+    else
+      result[i] = a[i];
+  }
+
+  result[i] = '\n';
+  i++;
+  result[i] = '\0';
+}
 
 /* ------------------------------------------------------------------------- */
