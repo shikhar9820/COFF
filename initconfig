@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
 write_config(){
-  echo "PATH TO QUESTION" >  ~/.coff_config
-  echo "~/coff/quest"     >> ~/.coff_config
-  echo "PATH TO ANSWER"   >> ~/.coff_config
-  echo "~/coff/ans"       >> ~/.coff_config
+  rm ~/.coff_config
+  {
+    echo "PATH TO QUESTION"
+    echo "$HOME/coff/quest"
+    echo "PATH TO ANSWER"
+    echo "$HOME/coff/ans"
+  } >> ~/.coff_config
 }
 
 if [ -e ~/.coff_config ]
@@ -14,7 +17,7 @@ then
 
   while :
   do
-    read CHOICE
+    read -r CHOICE
     if [[ "$CHOICE" = "y" || "$CHOICE" = "Y" ]]
     then
       write_config
