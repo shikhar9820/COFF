@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 write_config(){
   echo "PATH TO QUESTION" >  ~/.coff_config
