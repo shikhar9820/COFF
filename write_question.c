@@ -74,23 +74,30 @@ int main(){
     exit(1);
   }
 
-  printf("\nEnter the Question-Name (Max %u characters): ",
+  printf("\nEnter the Question-Name (Max %u characters) >",
          INPUT_MAX-1);
   read_input_string(q.name);
 //  printf("inName: %s", q.name);
 
   printf("\nEnter the Question-Statement (Hit Enter when done writing) (Max \
-%u characters)\nStart: ",
+%u characters)\nStart >",
          QUEST_MAX-1);
   read_quest_string(q.question);
 //  printf("inQuest: %s", q.question);
 
-  read_int_string(temp, "Enter the no of examples: ");
-  q.no_of_examples = (unsigned int) atoi(temp);
+  while(1) {
+    read_int_string(temp, "\nEnter the no of examples: ");
+    q.no_of_examples = (unsigned int) atoi(temp);
+    if(q.no_of_examples != 0)
+      break;
+  }
 
-  read_int_string(temp, "Enter the no of test cases: ");
-  q.no_of_test_cases = (unsigned int) atoi(temp);
-
+  while(1) {
+    read_int_string(temp, "\nEnter the no of test cases: ");
+    q.no_of_test_cases = (unsigned int) atoi(temp);
+    if(q.no_of_test_cases != 0)
+      break;
+  }
 //  printf("in%u  %u", q.no_of_examples, q.no_of_test_cases);
 
   if (fwrite( &q, sizeof(struct question), 1, outfile) == 0)
@@ -98,8 +105,8 @@ int main(){
 
   printf("\nEnter Constraints");
   read_int_string(cons.time_limit, "\nEnter time limit (in milli seconds): " );
-  read_int_string(cons.memory, "\nEnter the max memory usage (in MB): " );
-  read_int_string(cons.cpu, "\nEnter CPU percentage usage (DO NOT\
+  read_int_string(cons.memory, "Enter the max memory usage (in MB): " );
+  read_int_string(cons.cpu, "Enter CPU percentage usage (DO NOT\
  Write \'%%\') : " );
 
   if(fwrite(&cons, sizeof(struct constraints), 1, outfile) == 0)
@@ -107,9 +114,9 @@ int main(){
 
   for (i=0; i<q.no_of_examples; i++) {
     printf("\n\nExamples no %d", i+1);
-    printf("\n Example input:  ");
+    printf("\n Example input (Max 100 Chars)  >");
     read_input_string(examp.input);
-    printf(" Example output: ");
+    printf(" Example output (Max 100 Chars) >");
     read_input_string(examp.output);
     if(fwrite(&examp, sizeof(struct example), 1, outfile) == 0)
       print_err("Contents not written successfully.");
@@ -119,13 +126,14 @@ int main(){
 
   for (i=0; i<q.no_of_test_cases; i++) {
     printf("\n\nTest Case no %d", i+1);
-    printf("\n Test Case input: ");
+    printf("\n Test Case input (Max 100 Chars)  >");
     read_input_string(test.input);
-    printf(" Test Case output: ");
+    printf(" Test Case output (Max 100 Chars) >");
     read_input_string(test.output);
     if(fwrite(&test, sizeof(struct test_case), 1, outfile) == 0)
       print_err("Contents not written successfully.");
   }
 
   fclose(outfile);
+  printf("\n----------------------------------------------------------------\n");
 }
