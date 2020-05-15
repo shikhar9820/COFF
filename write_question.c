@@ -64,7 +64,10 @@ int main(){
   char_flush(file, PATH_MAX);
   strcpy(file, coff_config.quest_directory);
   strcat(file, "/newQuestion.quest");
-  printf("\nThe Question will be written in: %s\n", file);
+  printf("\n"
+         BOLD_FORMAT
+         " The Question will be written in: %s \n"
+         NORMAL_FORMAT, file);
 
   remove(file);
 
@@ -73,6 +76,12 @@ int main(){
     print_err("Could not open file.");
     exit(1);
   }
+
+  printf("\n"
+         HIGHLIGHT_FORMAT
+         BOLD_FORMAT
+         " Question Header \n"
+         NORMAL_FORMAT);
 
   printf("\nEnter the Question-Name (Max %u characters) >",
          INPUT_MAX-1);
@@ -93,7 +102,7 @@ int main(){
   }
 
   while(1) {
-    read_int_string(temp, "\nEnter the no of test cases: ");
+    read_int_string(temp, "Enter the no of test cases: ");
     q.no_of_test_cases = (unsigned int) atoi(temp);
     if(q.no_of_test_cases != 0)
       break;
@@ -103,7 +112,11 @@ int main(){
   if (fwrite( &q, sizeof(struct question), 1, outfile) == 0)
     print_err("Contents not written successfully.");
 
-  printf("\nEnter Constraints");
+  printf("\n"
+         HIGHLIGHT_FORMAT
+         BOLD_FORMAT
+         " Enter Constraints "
+         NORMAL_FORMAT);
   read_int_string(cons.time_limit, "\nEnter time limit (in milli seconds): " );
   read_int_string(cons.memory, "Enter the max memory usage (in MB): " );
   read_int_string(cons.cpu, "Enter CPU percentage usage (DO NOT\
@@ -112,8 +125,14 @@ int main(){
   if(fwrite(&cons, sizeof(struct constraints), 1, outfile) == 0)
     print_err("Contents not written successfully.");
 
+  printf("\n----------------------------------------------------------------");
+
   for (i=0; i<q.no_of_examples; i++) {
-    printf("\n\nExamples no %d", i+1);
+    printf("\n\n"
+           HIGHLIGHT_FORMAT
+           BOLD_FORMAT
+           " Examples no %d "
+           NORMAL_FORMAT, i+1);
     printf("\n Example input (Max 100 Chars)  >");
     read_input_string(examp.input);
     printf(" Example output (Max 100 Chars) >");
@@ -125,7 +144,11 @@ int main(){
   printf("\n----------------------------------------------------------------");
 
   for (i=0; i<q.no_of_test_cases; i++) {
-    printf("\n\nTest Case no %d", i+1);
+    printf("\n\n"
+           HIGHLIGHT_FORMAT
+           BOLD_FORMAT
+           " Test Case no %d "
+           NORMAL_FORMAT, i+1);
     printf("\n Test Case input (Max 100 Chars)  >");
     read_input_string(test.input);
     printf(" Test Case output (Max 100 Chars) >");

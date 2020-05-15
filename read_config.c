@@ -46,7 +46,21 @@ void read_config(void){
   char path[PATH_MAX];
   char temp[PATH_MAX];
 
-  printf("\nReading configuration file.");
+  printf("\n"
+         HIGHLIGHT_FORMAT
+         BOLD_FORMAT
+"                                                                            \
+   \n"
+"                               WELCOME TO COFF                              \
+   \n"
+"                                                                            \
+   \n"
+         NORMAL_FORMAT);
+
+  printf("\n"
+         BOLD_FORMAT
+         "Reading configuration file."
+         NORMAL_FORMAT);
 
   /* Get Home folder of the user */
   filename_flush(coff_config.home);
