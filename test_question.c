@@ -16,7 +16,7 @@
 
 /* ------------------------------------------------------------------------- */
 
-static int run_question(const char[], const char[]);
+static int run_question(const char[], const char[], const int);
 static void format_test_case_input(char[], const char[]);
 char *argv[3];
 
@@ -42,6 +42,10 @@ int test_question(const struct arguments coff_arguments){
   command_flush(argv[0]);
   command_flush(argv[1]);
   command_flush(argv[2]);
+
+  /* --------------------------------------------------------------------- */
+  /*                      Environment Setup                                */
+  /* --------------------------------------------------------------------- */
 
   /*
    * If c, c++, c++11, c++17, then only the first character is 'c',
@@ -97,6 +101,9 @@ int test_question(const struct arguments coff_arguments){
     return 0;
   }
 
+  /* --------------------------------------------------------------------- */
+  /*                             Run Test                                  */
+  /* --------------------------------------------------------------------- */
 
   /* change current working directory */
   chdir(coff_config.quest_directory);
@@ -115,24 +122,29 @@ int test_question(const struct arguments coff_arguments){
   if(fread(&cons, sizeof(struct constraints), 1, infile) == 0)
     print_err("Could not read content.");
 
+  /* Examples */
   for(i=0; i<q.no_of_examples; i++){
     if(fread(&examp, sizeof(struct example), 1, infile) == 0){
       print_err("Could not read content.");
       continue;
     }
+
+    printf("\nExample no %u: ", i+1);
+    run_question(examp.input, examp.output, 1);
+    printf("------------------------------------------------------------");
   }
 
+  /* Test Cases */
   for(i=0; i<q.no_of_test_cases; i++){
     if(fread(&test, sizeof(struct test_case), 1, infile) == 0){
       print_err("Could not read content.");
       continue;
     }
 
-    printf("\nTestcase %u: ", i+1);
-    run_question(test.input, test.output);
+    printf("\nTestcase no %u: ", i+1);
+    run_question(test.input, test.output, 0);
   }
-
-  printf("\n");
+  printf("\n------------------------------------------------------------\n");
 
   fclose(infile);
 
@@ -145,7 +157,9 @@ int test_question(const struct arguments coff_arguments){
 
 /* ------------------------------------------------------------------------- */
 
-static int run_question(const char test_input[], const char test_output[]){
+static int run_question(const char test_input[],
+                        const char test_output[],
+                        const int flag) {
   char child_output[INPUT_MAX];
   char test_format_input[INPUT_MAX];
   int status;
@@ -209,12 +223,33 @@ static int run_question(const char test_input[], const char test_output[]){
       child_output[i-1] = '\0';
 
     if(strcmp(child_output, test_output) == 0)
-      printf("PASSED");
+      printf(BOLD_FORMAT
+             "PASSED"
+             NORMAL_FORMAT);
     else
-      printf("FAILED");
+      printf(BOLD_FORMAT
+             "FAILED"
+             NORMAL_FORMAT);
 
-    printf("\n  Expected Output: %s", test_output);
-    printf("\n  Your Output    : %s\n", child_output);
+    if(flag != 0) {
+      printf("\n\n  * Input-----------|"
+             HIGHLIGHT_FORMAT
+             "%s"
+             NORMAL_FORMAT
+             "|-end-of-line", test_input);
+
+      printf("\n\n  * Expected Output-|"
+             HIGHLIGHT_FORMAT
+             "%s"
+             NORMAL_FORMAT
+             "|-end-of-line", test_output);
+
+      printf("\n\n  * Your Output-----|"
+             HIGHLIGHT_FORMAT
+             "%s"
+             NORMAL_FORMAT
+             "|-end-of-line\n", child_output);
+    }
 
     close(pipe_c_out[0]);
     close(pipe_p_out[1]);

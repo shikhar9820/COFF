@@ -12,6 +12,10 @@
 #define INPUT_MAX 101  /* Max char limit for inputs */
 #define QUEST_MAX 1001 /* Max char limit for question */
 
+#define NORMAL_FORMAT "\e[0m"
+#define HIGHLIGHT_FORMAT "\e[7m"
+#define BOLD_FORMAT "\e[1m"
+
 /*
  * The pattern is to define string size as "xyz_size_len" and the input size
  * in string will be of size "xyz_size".

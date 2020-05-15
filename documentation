@@ -142,3 +142,50 @@ or
 > ./coff -t add.py -s example1.quest -lpython3 -f "-c"
 
 ===============================================================================
+
+================
+ Write Question
+================
+
+Coff works very differently from online Code Judges.
+
+Normally, online judges give 2 types of inputs to your solution program. 1st
+input defines number of test cases and 2 type of inputs are the actual inputs
+to test your solution.
+
+Coff doesn't require 1st input. While making a question file, it simple asks
+the question-maker to input the number of examples and test-cases he/she would
+like to feed. And does it accordingly.
+
+Your solution need not take input for number of test-cases.
+
+While feeding questions:
+
+  1) - Feed Question name (Max 100 Chars)
+  2) - Feed Question statement/description (Max 1000 Chars). This is done via
+       commandline, hence it should not contain new line. If you want new line.
+       Because as soon as you press enter, it will take input.
+  3) - The tricky place is when is asks for "Example input", "Example output",
+       "Test case input" and "Test case output". Since many questions may
+       contain string patterns in input or output, no strict string parsing is
+       done in Coff.
+
+       In normal case:
+       a) - There should be no preceeding blank characters nor trailing.
+       b) - Each distinct input should be separated by single white space.
+       c) - For example, for adding,
+            the input is "2 5" and output is "7" (without double quotes).
+            It should not be "  2   5 " or "   7", unless the motive of the
+            question is a string pattern.
+
+            As, for example in addition program, python reads a = int(input()).
+            The trailing, preceeding extra white space will be read and cause
+            error.
+       d) - For the same reason, there should be no non-required newline
+            characters.
+
+  4) - Once done, the question file will be created with name
+       "newQuestion.quest", at the location specied under the heading
+       "PATH TO QUESTION" in your configuration file.
+
+===============================================================================
