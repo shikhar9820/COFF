@@ -61,14 +61,14 @@ struct example {
  * - 16 = flag
  */
 
-struct {
+struct confi {
   char cwd[PATH_MAX];
   char home[PATH_MAX];
   char quest_directory[PATH_MAX];
   char test_directory[PATH_MAX];
   char null_directory[PATH_MAX];
   uint8_t opt : 5;
-}coff_config;
+}extern coff_config;
 
 /* ========================================================================= */
 /* Used by main to communicate with parse_opt.

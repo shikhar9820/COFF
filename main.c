@@ -7,6 +7,7 @@
 /* Local Headers */
 #include "coff.h"
 
+struct confi coff_config;
 /* ------------------------------------------------------------------------- */
 /* ARGP definitions */
 
