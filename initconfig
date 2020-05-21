@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 write_config(){
-  rm ~/.coff_config
+  truncate -s 0 ~/.coff_config
   {
     echo "PATH TO QUESTION"
     echo "$HOME/coff/quest"
