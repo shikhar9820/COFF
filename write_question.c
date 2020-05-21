@@ -7,6 +7,7 @@
 /* Local Headers */
 #include "coff.h"
 
+struct confi coff_config;
 /* ------------------------------------------------------------------------- */
 
 /* It's purpose is to read string of size 'i' and store into char 'a'
